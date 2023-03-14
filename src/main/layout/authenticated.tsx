@@ -7,9 +7,11 @@ export const AuthenticatedLayout = ({ children }: { children: React.ReactNode })
       <Head>
         <title>Home | Musify</title>
       </Head>
-      sidebar header
-      <main>{children}</main>
-      footer
+      <div className='w-full h-screen bg-zinc-900'>
+        sidebar header
+        <main>{children}</main>
+        footer
+      </div>
     </>
   )
 }
