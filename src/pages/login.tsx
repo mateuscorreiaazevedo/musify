@@ -1,8 +1,10 @@
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
+import { authOptions } from './api/auth/[...nextauth]'
+import { getServerSession } from 'next-auth'
 import { GetServerSideProps } from 'next'
-import React from 'react'
-import Image from 'next/image'
 import { toast } from 'react-toastify'
+import Image from 'next/image'
+import React from 'react'
 
 type Props = {
   providers: Awaited<ReturnType<typeof getProviders>>
@@ -40,8 +42,18 @@ export default function Login ({ providers }: Props) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
   const providers = await getProviders()
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
