@@ -1,27 +1,27 @@
 import nextAuth, { NextAuthOptions } from 'next-auth'
-// import Credentials from 'next-auth/providers/credentials'
+import Spotify from 'next-auth/providers/spotify'
+import { scopes } from '@/main/config/spotify'
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    // Credentials({
-    //   name: 'credentials',
-    //   credentials: {},
-    //   authorize: async (credentials) => {
-    //     try {
-    //     } catch (error) {
-    //       throw new Error((error as any).message)
-    //     }
-    //   }
-    // }),
+    Spotify({
+      clientId: process.env.SPOTIFY_ID!,
+      clientSecret: process.env.SPOTIFY_SECRET!,
+      authorization: {
+        url: 'https://accounts.spotify.com/authorize',
+        params: {
+          scope: scopes
+        }
+      }
+    })
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt'
   },
-  // pages: {
-  // signIn: '/login'
-  // error: '/login'
-  // }
+  pages: {
+    signIn: '/login'
+  }
 
 }
 
