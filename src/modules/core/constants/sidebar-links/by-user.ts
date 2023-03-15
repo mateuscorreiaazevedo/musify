@@ -1,8 +1,8 @@
 import {
   BsBookmark,
   BsBookmarkFill,
-  BsBookmarkHeart,
-  BsBookmarkHeartFill,
+  BsHeart,
+  BsHeartFill,
   BsPlusSquare,
   BsPlusSquareFill
 } from 'react-icons/bs'
@@ -15,8 +15,8 @@ export default [
     label: 'criar playlist'
   },
   {
-    iconFill: BsBookmarkHeartFill,
-    iconOut: BsBookmarkHeart,
+    iconFill: BsHeartFill,
+    iconOut: BsHeart,
     link: '/collection/tracks',
     label: 'músicas curtidas'
   },
