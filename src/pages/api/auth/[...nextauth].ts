@@ -34,6 +34,7 @@ const jwtCallback: CallbacksOptions['jwt'] = async ({ token, account, user }) =>
       refreshToken: account.refresh_token!,
       expiresAt: (account.expires_at as number) * 1000 // conterted to ms
     }
+    console.log('id:', extendedToken.id)
     return extendedToken
   }
 
@@ -75,7 +76,6 @@ export const authOptions: NextAuthOptions = {
     jwt: jwtCallback,
     session: sessionCallback
   }
-
 }
 
 export default nextAuth(authOptions)
