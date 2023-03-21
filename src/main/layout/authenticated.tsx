@@ -6,16 +6,12 @@ export const AuthenticatedLayout = ({ children }: { children: React.ReactNode })
   return (
     <>
       <Head>
-        <title>Home | Musify</title>
+        <title>Home • Musify</title>
       </Head>
-      <div className="w-full h-screen bg-zinc-900">
-        <Sidebar />
-        <main className='pl-64'>
-          <Header />
-          {children}
-          <Player />
-        </main>
-      </div>
+      <Sidebar />
+      <Header />
+      <main className="pl-64 pr-4">{children}</main>
+      <Player />
     </>
   )
 }

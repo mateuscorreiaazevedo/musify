@@ -8,12 +8,12 @@ import { useInView } from 'react-intersection-observer'
 import { sidebarByUserLinks, sidebarMainLinks } from '..'
 
 export const Sidebar = () => {
-  const { ref, inView, entry } = useInView({ threshold: 0 })
+  const { ref, inView } = useInView({ threshold: 0 })
   const { playlists, refreshPlaylistsInView } = useUserPlaylists()
   const { query } = useRouter()
 
   React.useEffect(() => {
-    if (entry) {
+    if (inView) {
       refreshPlaylistsInView()
     }
   }, [inView])

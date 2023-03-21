@@ -1,7 +1,6 @@
 import { useSpotify } from '@/modules/core'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 
 export const useUserPlaylists = () => {
   const [playlists, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
@@ -17,13 +16,13 @@ export const useUserPlaylists = () => {
           const response = await spotifyApi.getUserPlaylists({ limit: 25 })
           setPlaylists(response.body.items)
         } catch (error) {
-          toast.error((error as any).message)
+          signOut({ callbackUrl: '/login' })
         } finally {
           setLoading(false)
         }
       })()
     }
-  }, [session, spotifyApi])
+  }, [session])
 
   const refreshPlaylistsInView = async () => {
     if (!loading) {
@@ -32,7 +31,6 @@ export const useUserPlaylists = () => {
         setOffset(offset + 20)
         setPlaylists([...playlists, ...response.body.items])
       } catch (error) {
-        toast.error((error as any).message)
       }
     }
   }

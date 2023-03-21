@@ -15,7 +15,7 @@
     "@radix-ui/react-popover": "^1.0.5",
     "axios": "^1.2.6",
     "dayjs": "^1.11.7",
-    "framer-motion": "^6",
+    "framer-motion": "^10.6.1",
     "next": "13.1.6",
     "next-auth": "^4.19.0",
     "nookies": "^2.5.2",
