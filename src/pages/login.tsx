@@ -22,7 +22,7 @@ export default function Login ({ providers }: Props) {
   }
 
   return (
-    <div className='w-full h-screen flex items-center justify-center'>
+    <div className='w-full bg-black h-screen flex items-center justify-center'>
       <section className='flex flex-col items-center gap-10'>
         <Image
           src='https://cdn.worldvectorlogo.com/logos/spotify-2.svg'

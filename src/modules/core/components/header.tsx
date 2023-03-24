@@ -1,4 +1,3 @@
-import { useScroll, useTransform, motion } from 'framer-motion'
 import { signOut, useSession } from 'next-auth/react'
 import * as Popover from '@radix-ui/react-popover'
 import { IoMdArrowDropdown } from 'react-icons/io'
@@ -6,24 +5,11 @@ import { PopoverUI } from '@/main/ui'
 import Image from 'next/image'
 import React from 'react'
 
-const inputRange = [0, 300, 700]
-
 export const Header = () => {
   const { data: session } = useSession()
-  const { scrollY } = useScroll()
-  const background = useTransform(
-    scrollY,
-    inputRange,
-    ['transparent', 'transparent', 'rgba(50, 50, 50, 0.8)']
-  )
-  const backdropFilter = useTransform(
-    scrollY,
-    inputRange,
-    ['none', 'none', 'blur(6px)']
-  )
 
   return (
-    <motion.header style={{ background, backdropFilter }} className="sticky z-20 top-0 w-full h-20 flex items-center justify-between">
+    <header className="sticky z-20 top-0 w-full h-20 flex items-center justify-between">
       <div className="w-full" />
       <Popover.Root>
         <Popover.Trigger>
@@ -58,6 +44,6 @@ export const Header = () => {
           </nav>
         </PopoverUI>
       </Popover.Root>
-    </motion.header>
+    </header>
   )
 }

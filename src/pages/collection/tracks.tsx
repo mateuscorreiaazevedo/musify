@@ -1,36 +1,14 @@
-import { useInView } from 'react-intersection-observer'
-import { MdOutlineWatchLater } from 'react-icons/md'
 import { useTracks } from '@/modules/collections'
-import { formatHelper } from '@/modules/core'
 import { useSession } from 'next-auth/react'
+import { Table, TableIcon } from '@/main/ui'
 import { FaHeart } from 'react-icons/fa'
 import Link from 'next/link'
 import Head from 'next/head'
 import React from 'react'
 
-import { useScroll, useTransform, motion } from 'framer-motion'
-
 export default function Tracks () {
   const { handleMoreTracks, likedTracks, loading, totalTracks } = useTracks()
   const { data: session } = useSession()
-  const { ref, inView } = useInView()
-  const { scrollY } = useScroll()
-  const background = useTransform(
-    scrollY,
-    [0, 450, 700],
-    ['transparent', 'transparent', '#222222']
-  )
-  const borderColor = useTransform(
-    scrollY,
-    [0, 450, 700],
-    ['transparent', 'transparent', '#434343']
-  )
-
-  React.useEffect(() => {
-    if (inView) {
-      handleMoreTracks()
-    }
-  }, [inView])
 
   if (loading) return <></>
 
@@ -56,50 +34,20 @@ export default function Tracks () {
             </div>
           </div>
         </section>
-        <section className="mt-48 mb-24">
-          <motion.div
-            transition={{ duration: 1.5 }}
-            style={{ background, borderBottomColor: borderColor }}
-            className='fixed left-60 top-20 w-full h-10 border-b'
-          />
-          <table className="w-full font-semibold text-zinc-500">
-            <thead
-              className="sticky top-20 border-b border-b-zinc-700 h-10 text-zinc-300 pl-2"
-            >
-              <tr>
-                <td className='pl-4'>#</td>
-                <td>Título</td>
-                <td>Álbum</td>
-                <td>Adicionada em</td>
-                <td>
-                  <MdOutlineWatchLater className="pl-2 text-3xl" />
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {likedTracks.map((item, i: number) => (
-                <tr key={i} className='group/item hover:bg-zinc-700 transition-colors'>
-                  <td className="pl-4">{i + 1}</td>
-                  <td className="flex gap-2 py-2 text-zinc-300 hover:text-white cursor-pointer">
-                    <img src={item.track.album?.images[0].url} alt={item.track.album.name} className="w-10 h-10" />
-                    <div>
-                      <h3>{item.track.name}</h3>
-                      <p className="text-zinc-500 text-sm truncate md:w-44 lg:w-60 xl:w-72 2xl:w-full">
-                        {item.track.artists.map(({ name }) => name).join(', ')}
-                      </p>
-                    </div>
-                  </td>
-                  <td>
-                    <p className="text-zinc-500 group-hover/item:text-zinc-200 truncate md:w-40 lg:w-56 xl:w-64 2xl:w-full">{item.track.album.name}</p>
-                  </td>
-                  <td>{formatHelper.formatDate(item.added_at)}</td>
-                  <td>{formatHelper.formatDuration(item.track.duration_ms)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div ref={ref} />
-        </section>
+        <Table intercectionFuntion={handleMoreTracks} primaryColor='#402E7D'>
+          {likedTracks.map((item, index: number) => (
+            <TableIcon
+              key={index}
+              addedAt={item.added_at}
+              albumName={item.track.album.name}
+              image={item.track.album.images[0].url}
+              name={item.track.name}
+              artists={item.track.artists}
+              duration={item.track.duration_ms}
+              index={index}
+            />
+          ))}
+        </Table>
       </article>
     </div>
   )
