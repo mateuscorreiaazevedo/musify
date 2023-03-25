@@ -6,7 +6,6 @@ export const useTracks = () => {
   const [likedTracks, setLikedTracks] = React.useState<SpotifyApi.SavedTrackObject[]>([])
   const [totalTracks, setTotalTracks] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
-  const [offset, setOffset] = React.useState(20)
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
@@ -27,9 +26,8 @@ export const useTracks = () => {
   async function handleMoreTracks () {
     if (!loading) {
       try {
-        const { body } = await spotifyApi.getMySavedTracks({ offset })
+        const { body } = await spotifyApi.getMySavedTracks({ offset: likedTracks?.length })
         setLikedTracks([...likedTracks, ...body.items])
-        setOffset(offset + 20)
       } catch (error) {
         toast.error((error as any).message)
       }

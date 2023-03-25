@@ -1,6 +1,6 @@
 import { useTracks } from '@/modules/collections'
 import { useSession } from 'next-auth/react'
-import { Table, TableIcon } from '@/main/ui'
+import { Table, TableItem } from '@/main/ui'
 import { FaHeart } from 'react-icons/fa'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -36,7 +36,7 @@ export default function Tracks () {
         </section>
         <Table intercectionFuntion={handleMoreTracks} primaryColor='#402E7D'>
           {likedTracks.map((item, index: number) => (
-            <TableIcon
+            <TableItem
               key={index}
               addedAt={item.added_at}
               albumName={item.track.album.name}

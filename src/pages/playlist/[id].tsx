@@ -1,40 +1,18 @@
-import { useSpotify } from '@/modules/core'
-import { useRouter } from 'next/router'
+import { usePlaylist } from '@/modules/playlists'
+import { formatHelper } from '@/modules/core'
+import { Table, TableItem } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
 export default function Playlist () {
-  const [playlist, setPlaylist] = React.useState({} as SpotifyApi.SinglePlaylistResponse)
-  const [loading, setLoading] = React.useState(false)
-  const { spotifyApi } = useSpotify()
-  const { query, push } = useRouter()
+  const { handleMoreTracks, loading, playlist, tracks } = usePlaylist()
 
-  const formatedNumber = Intl.NumberFormat('pt-BR').format(playlist.followers?.total)
-
-  React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const { body } = await spotifyApi.getPlaylist(query.id as string)
-        setPlaylist(body)
-      } catch (error) {
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [query.id])
-
-  console.log(playlist)
-
-  if (loading) {
-    return <></>
-  }
+  if (loading) return <></>
 
   return (
     <>
-      <div className="absolute inset-0 pl-64 h-1/2 bg-gradient-to-b from-[#1db954] to-transparent" />
+      <div className="absolute inset-0 pl-64 h-2/3 bg-gradient-to-b from-[#1db954] to-transparent" />
       <Head>
         <title>{playlist.name} • Musify</title>
       </Head>
@@ -43,18 +21,32 @@ export default function Playlist () {
           {playlist.images && <img src={playlist.images[0].url} alt={playlist.description!} className="w-44" />}
           <div>
             <h1 className="text-5xl font-bold">{playlist.name}</h1>
-            <p className='w-full pr-44 text-justify'>{playlist.description}</p>
-            <div className='flex gap-1 mt-2'>
-              <Link href={`/user/${playlist.owner?.id}`} className='font-bold hover:underline'>{playlist.owner?.display_name}</Link>
+            <p className="w-full pr-44 text-justify">{playlist.description}</p>
+            <div className="flex gap-1 mt-2">
+              <Link href={`/user/${playlist.owner?.id}`} className="font-bold hover:underline">
+                {playlist.owner?.display_name}
+              </Link>
               <span>•</span>
-              <p>{formatedNumber} curtidas </p>
+              <p>{formatHelper.formatNumber(playlist.followers?.total)} curtidas </p>
               <span>•</span>
               <p>{playlist.tracks?.total} músicas</p>
             </div>
           </div>
         </section>
-        <section>
-        </section>
+        <Table primaryColor="#1DB653" intercectionFuntion={handleMoreTracks}>
+          {tracks?.map((item, index: number) => (
+            <TableItem
+              key={index}
+              name={item.track?.name}
+              addedAt={item.added_at}
+              albumName={item.track?.album.name}
+              index={index}
+              artists={item.track?.artists}
+              duration={item.track?.duration_ms}
+              image={item.track?.album.images[0].url}
+            />
+          ))}
+        </Table>
       </article>
     </>
   )

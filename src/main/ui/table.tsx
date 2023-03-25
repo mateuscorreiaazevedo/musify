@@ -5,7 +5,7 @@ import React from 'react'
 import { transparentize } from 'polished'
 
 interface Props {
-  intercectionFuntion: () => Promise<void>
+  intercectionFuntion?: () => Promise<void>
   children: React.ReactNode
   primaryColor?: string
 }
@@ -24,23 +24,18 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
       transparentize(0.9, color),
       transparentize(0.5, color)
     ])
-    backdropFilter = useTransform(
-      scrollY, inputRange,
-      [
-        'none',
-        'blur(1px)',
-        'blur(6px)'
-      ]
-    )
+    backdropFilter = useTransform(scrollY, inputRange, ['none', 'blur(1px)', 'blur(6px)'])
   }
   const background = useTransform(scrollY, inputRange, ['transparent', transparentize(1, '#222222'), '#222222'])
   const borderColor = useTransform(scrollY, inputRange, ['transparent', transparentize(1, '#434343'), '#434343'])
 
-  React.useEffect(() => {
-    if (inView) {
-      intercectionFuntion()
-    }
-  }, [inView])
+  if (intercectionFuntion) {
+    React.useEffect(() => {
+      if (inView) {
+        intercectionFuntion()
+      }
+    }, [inView])
+  }
 
   return (
     <section className="mt-48 mb-24">

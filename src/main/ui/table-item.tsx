@@ -3,15 +3,15 @@ import React from 'react'
 
 type Props = {
   index: number
-  image: string
-  name: string
-  artists: { name: string }[]
-  albumName: string
-  addedAt: string
-  duration: number | string
+  image?: string
+  name?: string
+  artists?: { name: string }[]
+  albumName?: string
+  addedAt?: string
+  duration?: number | string
 }
 
-export const TableIcon = (props: Props) => {
+export const TableItem = (props: Props) => {
   const { addedAt, albumName, artists, duration, image, index, name } = props
 
   return (
@@ -22,7 +22,7 @@ export const TableIcon = (props: Props) => {
         <div>
           <h3>{name}</h3>
           <p className="text-zinc-500 text-sm truncate md:w-44 lg:w-60 xl:w-72 2xl:w-full">
-            {artists.map(({ name }) => name).join(', ')}
+            {artists?.map(({ name }) => name).join(', ')}
           </p>
         </div>
       </td>
@@ -31,8 +31,8 @@ export const TableIcon = (props: Props) => {
           {albumName}
         </p>
       </td>
-      <td>{formatHelper.formatDate(addedAt)}</td>
-      <td>{formatHelper.formatDuration(duration)}</td>
+      <td>{formatHelper.formatDate(addedAt!)}</td>
+      <td>{formatHelper.formatDuration(duration!)}</td>
     </tr>
   )
 }
