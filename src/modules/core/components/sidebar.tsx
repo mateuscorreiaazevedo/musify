@@ -19,7 +19,7 @@ export const Sidebar = () => {
   }, [inView])
 
   return (
-    <nav className="w-60 h-screen fixed z-30 top-0 left-0 bg-black pt-8">
+    <nav className="w-60 h-[92vh] fixed z-30 top-0 left-0 bg-black pt-8 border-r border-r-zinc-700">
       <div className="space-y-4 mx-4 h-full">
         <Link href='/'>
           <Image
@@ -52,7 +52,7 @@ export const Sidebar = () => {
             />
           ))}
         </ul>
-        <ul className="h-[59vh] overflow-y-auto scrollbar-thin px-1 scrollbar-thumb-zinc-800">
+        <ul className="h-[49.5vh] overflow-y-auto scrollbar-thin px-1 scrollbar-thumb-zinc-800">
           {playlists.map((item, i: React.Key) => (
             <li key={i} className="truncate my-0.5">
               <Link href={`/playlist/${item.id}`} className={` hover:text-white transition-colors ${query.id === item.id ? 'text-white' : 'text-zinc-400'}`}>
