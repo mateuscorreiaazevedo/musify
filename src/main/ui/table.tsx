@@ -55,7 +55,7 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
             <td className="pl-4">#</td>
             <td>Título</td>
             <td>Álbum</td>
-            <td>Adicionada em</td>
+            <td className='w-40'>Adicionada em</td>
             <td>
               <MdOutlineWatchLater className="pl-2 text-3xl" />
             </td>
