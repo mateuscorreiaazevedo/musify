@@ -52,7 +52,7 @@ export const Sidebar = () => {
             />
           ))}
         </ul>
-        <ul className="h-[49.5vh] overflow-y-auto scrollbar-thin px-1 scrollbar-thumb-zinc-800">
+        <ul className="h-[59.6vh] overflow-y-auto scrollbar-thin px-1 scrollbar-thumb-zinc-800">
           {playlists.map((item, i: React.Key) => (
             <li key={i} className="truncate my-0.5">
               <Link href={`/playlist/${item.id}`} className={` hover:text-white transition-colors ${query.id === item.id ? 'text-white' : 'text-zinc-400'}`}>
@@ -60,7 +60,7 @@ export const Sidebar = () => {
               </Link>
             </li>
           ))}
-          <div ref={ref} />
+          <div ref={ref} className='w-full h-1' />
         </ul>
       </div>
     </nav>

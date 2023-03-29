@@ -1,14 +1,14 @@
 import { useTracks } from '@/modules/collections'
-import { useSession } from 'next-auth/react'
 import { Table, TableItem } from '@/main/ui'
 import { FaHeart } from 'react-icons/fa'
+import { useMe } from '@/modules/user'
 import Link from 'next/link'
 import Head from 'next/head'
 import React from 'react'
 
 export default function Tracks () {
   const { handleMoreTracks, likedTracks, loading, totalTracks } = useTracks()
-  const { data: session } = useSession()
+  const { me } = useMe()
 
   if (loading) return <></>
 
@@ -20,14 +20,14 @@ export default function Tracks () {
       <div className="absolute inset-0 pl-64 h-2/3 bg-gradient-to-b from-[#412F80] to-transparent" />
       <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
-          <span className="p-16 bg-gradient-to-br shadow-lg from-[#4622B3] to-[#798D89]">
+          <span className="p-16 bg-gradient-to-br rounded-md shadow-lg from-[#4622B3] to-[#798D89]">
             <FaHeart className="text-6xl" />
           </span>
           <div>
             <h1 className="text-5xl font-bold">Músicas Curtidas</h1>
             <div className="flex gap-1 mt-2">
-              <Link href="/user/me" className="hover:underline">
-                <p className="font-bold">{session?.user?.name}</p>
+              <Link href={`/user/${me.id}`} className="hover:underline">
+                <p className="font-bold">{me.display_name}</p>
               </Link>
               <span>•</span>
               <p>{totalTracks} músicas</p>

@@ -20,9 +20,9 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
 
   if (color) {
     primaryColor = useTransform(scrollY, inputRange, [
-      'transparent',
+      transparentize(1, color),
       transparentize(0.9, color),
-      transparentize(0.5, color)
+      transparentize(0.1, color)
     ])
     backdropFilter = useTransform(scrollY, inputRange, ['none', 'blur(1px)', 'blur(6px)'])
   }
