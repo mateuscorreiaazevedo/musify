@@ -27,13 +27,23 @@ export const useUserPlaylists = () => {
   const refreshPlaylistsInView = async () => {
     if (!loading) {
       try {
-        const response = await spotifyApi.getUserPlaylists({ offset: offset + 20 })
-        setOffset(offset + 20)
+        const response = await spotifyApi.getUserPlaylists({ offset: offset + 25, limit: 25 })
         setPlaylists([...playlists, ...response.body.items])
+        setOffset(offset + 25)
       } catch (error) {
+        signOut({ callbackUrl: '/login' })
       }
     }
   }
 
-  return { playlists, refreshPlaylistsInView }
+  async function getTrackMyPlaylist (id: string) {
+    try {
+      const { body: { items } } = await spotifyApi.getPlaylistTracks(id)
+      return items
+    } catch (error) {
+
+    }
+  }
+
+  return { playlists, refreshPlaylistsInView, getTrackMyPlaylist }
 }

@@ -1,16 +1,34 @@
 import { useTracks } from '@/modules/collections'
-import { Table, TableItem } from '@/main/ui'
+import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import { FaHeart } from 'react-icons/fa'
 import { useMe } from '@/modules/user'
 import Link from 'next/link'
 import Head from 'next/head'
 import React from 'react'
+import { usePlayback } from '@/modules/core'
 
 export default function Tracks () {
   const { handleMoreTracks, likedTracks, loading, totalTracks } = useTracks()
+  const { handlePlay } = usePlayback()
   const { me } = useMe()
 
-  if (loading) return <></>
+  if (loading) {
+    return (
+      <Head>
+        <title>Músicas Curtidas • Musify</title>
+      </Head>
+    )
+  }
+
+  async function handlePlayLikedMusics () {
+    const uris = likedTracks.map(item => item.track.uri)
+    await handlePlay(uris)
+  }
+
+  async function handlePlayMusic (i: number) {
+    const uris = likedTracks.slice(i).map(item => item.track.uri)
+    await handlePlay(uris)
+  }
 
   return (
     <div>
@@ -34,7 +52,11 @@ export default function Tracks () {
             </div>
           </div>
         </section>
-        <Table intercectionFuntion={handleMoreTracks} primaryColor='#402E7D'>
+        <ButtonPlay
+          handlePlayLikedMusics={handlePlayLikedMusics}
+          label='Músicas Curtidas'
+        />
+        <Table intercectionFuntion={handleMoreTracks} primaryColor="#402E7D">
           {likedTracks.map((item, index: number) => (
             <TableItem
               key={index}
@@ -45,6 +67,7 @@ export default function Tracks () {
               artists={item.track.artists}
               duration={item.track.duration_ms}
               index={index}
+              handlePlay={() => handlePlayMusic(index)}
             />
           ))}
         </Table>

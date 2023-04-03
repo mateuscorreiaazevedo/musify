@@ -1,5 +1,5 @@
 import { useSpotify } from '@/modules/core'
-import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 export const useTracks = () => {
@@ -7,6 +7,7 @@ export const useTracks = () => {
   const [totalTracks, setTotalTracks] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
   const { spotifyApi } = useSpotify()
+  const { push } = useRouter()
 
   React.useEffect(() => {
     (async () => {
@@ -16,7 +17,7 @@ export const useTracks = () => {
         setTotalTracks(body.total)
         setLikedTracks(body.items)
       } catch (error) {
-        toast.error((error as any).message)
+        push('/')
       } finally {
         setLoading(false)
       }
@@ -25,12 +26,8 @@ export const useTracks = () => {
 
   async function handleMoreTracks () {
     if (!loading) {
-      try {
-        const { body } = await spotifyApi.getMySavedTracks({ offset: likedTracks?.length })
-        setLikedTracks([...likedTracks, ...body.items])
-      } catch (error) {
-        toast.error((error as any).message)
-      }
+      const { body } = await spotifyApi.getMySavedTracks({ offset: likedTracks?.length })
+      setLikedTracks([...likedTracks, ...body.items])
     }
   }
 

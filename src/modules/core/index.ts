@@ -1,4 +1,6 @@
 export { default as formatHelper } from './utils/format-helper'
+export * from './contexts/playback-context'
+export * from './components/header-bar'
 export * from './components/sidebar'
 export * from './components/header'
 export * from './components/player'

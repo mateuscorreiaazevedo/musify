@@ -1,20 +1,31 @@
 import { usePlaylist } from '@/modules/playlists'
-import { formatHelper } from '@/modules/core'
-import { Table, TableItem } from '@/main/ui'
+import { formatHelper, usePlayback } from '@/modules/core'
+import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
 export default function Playlist () {
   const { handleMoreTracks, loading, playlist, tracks } = usePlaylist()
+  const { handlePlay } = usePlayback()
 
-  if (loading) return <></>
+  if (loading) return <Head><title>Musify</title></Head>
+
+  async function handlePlayPlaylist () {
+    const tracks = playlist.tracks.items.map(item => item.track?.uri)
+    await handlePlay(tracks as string[])
+  }
+
+  async function handlePlayMusic (i: number) {
+    const uris = playlist.tracks.items.slice(i).map(item => item.track?.uri)
+    await handlePlay(uris as string[])
+  }
 
   return (
     <>
       <div className="absolute inset-0 pl-64 h-2/3 bg-gradient-to-b from-[#1db954] to-transparent" />
       <Head>
-        <title>{playlist.name} • Musify</title>
+        <title>Musify • {playlist.name}</title>
       </Head>
       <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
@@ -33,7 +44,11 @@ export default function Playlist () {
             </div>
           </div>
         </section>
-        <Table primaryColor="#1DB653" intercectionFuntion={handleMoreTracks}>
+        <ButtonPlay
+          handlePlayLikedMusics={handlePlayPlaylist}
+          label={playlist.name}
+        />
+        <Table primaryColor="#157537" intercectionFuntion={handleMoreTracks}>
           {tracks?.map((item, index: number) => (
             <TableItem
               key={index}
@@ -43,7 +58,8 @@ export default function Playlist () {
               index={index}
               artists={item.track?.artists}
               duration={item.track?.duration_ms}
-              image={item.track?.album.images[0].url}
+              image={item.track?.album.images[0]?.url}
+              handlePlay={() => handlePlayMusic(index)}
             />
           ))}
         </Table>

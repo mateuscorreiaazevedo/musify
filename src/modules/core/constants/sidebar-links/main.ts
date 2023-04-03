@@ -18,7 +18,7 @@ export default [
   {
     iconFill: MdLibraryMusic,
     iconOut: MdOutlineLibraryMusic,
-    link: '/collection/library',
+    link: '/collection/playlists',
     label: 'sua biblioteca'
-  },
+  }
 ]
