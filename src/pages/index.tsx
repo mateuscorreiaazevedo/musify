@@ -1,12 +1,10 @@
-import { signOut } from 'next-auth/react'
+import { greeting } from '@/modules/core'
 import React from 'react'
 
-function Home () {
+export default function Home () {
   return (
     <>
-      <h1 onClick={() => signOut({ callbackUrl: '/login' })}>Hello World</h1>
+      <h1 className="text-4xl font-bold">{greeting}</h1>
     </>
   )
 }
-
-export default Home
