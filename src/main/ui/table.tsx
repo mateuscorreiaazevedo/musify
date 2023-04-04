@@ -37,7 +37,7 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
   }
 
   return (
-    <section className="mt-20 mb-24 min-h-[860px]">
+    <section className="mt-20 mb-24 min-h-full pb-16">
       <motion.div
         transition={{ duration: 1.5 }}
         style={{ background: primaryColor, backdropFilter }}

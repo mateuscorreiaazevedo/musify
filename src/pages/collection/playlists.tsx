@@ -1,14 +1,14 @@
-import { useTracks } from '@/modules/collections'
+import { CardPlaylist, useUserPlaylists } from '@/modules/playlists'
 import { HeaderBar, usePlayback } from '@/modules/core'
+import { useInView } from 'react-intersection-observer'
+import { useTracks } from '@/modules/collections'
 import { FaPlay } from 'react-icons/fa'
 import Link from 'next/link'
-import React from 'react'
-import { useUserPlaylists } from '@/modules/playlists'
-import { useInView } from 'react-intersection-observer'
 import Head from 'next/head'
+import React from 'react'
 
 export default function Library () {
-  const { playlists, refreshPlaylistsInView, getTrackMyPlaylist } = useUserPlaylists()
+  const { playlists, refreshPlaylistsInView } = useUserPlaylists()
   const { likedTracks, totalTracks, loading } = useTracks()
   const { ref, inView, entry } = useInView()
   const { handlePlay } = usePlayback()
@@ -16,13 +16,6 @@ export default function Library () {
   async function handlePlayLikedMusics () {
     const uris = likedTracks.map(item => item.track.uri)
     await handlePlay(uris)
-  }
-
-  async function handlePlayliPlaylist (id: string) {
-    const tracks = await getTrackMyPlaylist(id)
-    const uris = tracks?.map(item => item.track?.uri)
-
-    handlePlay(uris as string[])
   }
 
   React.useEffect(() => {
@@ -60,20 +53,15 @@ export default function Library () {
             </div>
           </div>
           {playlists.map(item => (
-            <div key={item.id} className="relative p-3 bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-md h-64 group/item mx-4">
-              <Link href={`/playlist/${item.id}`} className="flex flex-col gap-px">
-                <img src={item.images[0].url} alt={item.name} className="h-40 object-contain" />
-                <h2 className="text-xl font-bold truncate">{item.name}</h2>
-                <p className="text-zinc-400 truncate">{item.description}</p>
-                <p className="text-zinc-400 text-sm">De {item.owner.display_name}</p>
-              </Link>
-              <div
-                onClick={() => handlePlayliPlaylist(item.id)}
-                className="cursor-pointer shadow-lg absolute z-0 bottom-0 opacity-0 right-5 h-16 w-16 rounded-full bg-green-500 flex items-center justify-center transition-all group-hover/item:bottom-5 group-hover/item:opacity-100"
-              >
-                <FaPlay className="fill-black text-xl" />
-              </div>
-            </div>
+            <CardPlaylist
+              key={item.id}
+              description={item.description!}
+              id={item.id}
+              image={item.images[0]?.url}
+              link={`/playlist/${item.id}`}
+              name={item.name}
+              displayName={item.owner.display_name}
+            />
           ))}
         </section>
         <div ref={ref} />

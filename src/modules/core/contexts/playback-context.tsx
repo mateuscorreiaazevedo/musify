@@ -1,12 +1,14 @@
 import React from 'react'
 import { useSpotify } from '../hooks/use-spotify'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 interface ContextProps {
   currentDevice: SpotifyApi.UserDevice
   playback: SpotifyApi.CurrentPlaybackResponse
   handlePlay: (trackUris: string[]) => Promise<void>
   handlePause: () => Promise<void>
   setCurrentDevice: React.Dispatch<React.SetStateAction<SpotifyApi.UserDevice>>
+  handlePlayMusic: (arr: any[], i: number) => Promise<void>
 }
 
 const Context = React.createContext({} as ContextProps)
@@ -19,7 +21,7 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
 
   React.useEffect(() => {
     if (session) {
-      const interval = setInterval(async () => {
+      const interval = setTimeout(async () => {
         try {
           const devices = await spotifyApi.getMyDevices()
           const current = devices.body.devices[0]
@@ -38,7 +40,9 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
     try {
       await spotifyApi.play({ uris: trackUris, device_id: currentDevice.id! })
     } catch (error) {
-      // signOut({ callbackUrl: '/login' })
+      toast.error(
+        'Por favor, caso não possua dispositivo disponível, abra o site open.spotify.com para que o Spotify reconheça algum dispositivo como ativo'
+      )
     }
   }
 
@@ -46,11 +50,22 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
     try {
       await spotifyApi.pause()
     } catch (error) {
-      signOut({ callbackUrl: '/login' })
+      toast.error(
+        'Por favor, caso não possua dispositivo disponível, abra o site open.spotify.com para que o Spotify reconheça algum dispositivo como ativo'
+      )
     }
   }
 
-  return <Context.Provider value={{ setCurrentDevice, currentDevice, playback, handlePlay, handlePause }}>{children}</Context.Provider>
+  async function handlePlayMusic (arr: any[], i: number) {
+    const uris = arr.slice(i).map(item => item.uri)
+    await handlePlay(uris)
+  }
+
+  return (
+    <Context.Provider value={{ setCurrentDevice, currentDevice, playback, handlePlay, handlePause, handlePlayMusic }}>
+      {children}
+    </Context.Provider>
+  )
 }
 
 export const usePlayback = () => {

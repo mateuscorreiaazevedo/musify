@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import React from 'react'
 
-export const ItemList = (item: SpotifyApi.TrackObjectFull) => {
+export const MusicSearchList = (item: SpotifyApi.TrackObjectFull) => {
   const { spotifyApi } = useSpotify()
   const { currentDevice } = usePlayback()
 
