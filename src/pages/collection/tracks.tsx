@@ -5,11 +5,11 @@ import { useMe } from '@/modules/user'
 import Link from 'next/link'
 import Head from 'next/head'
 import React from 'react'
-import { usePlayback } from '@/modules/core'
+import { useGlobal } from '@/modules/core'
 
 export default function Tracks () {
   const { handleMoreTracks, likedTracks, loading, totalTracks } = useTracks()
-  const { handlePlay } = usePlayback()
+  const { handlePlay } = useGlobal()
   const { me } = useMe()
 
   if (loading) {

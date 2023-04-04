@@ -1,5 +1,5 @@
 import { usePlaylist } from '@/modules/playlists'
-import { formatHelper, usePlayback } from '@/modules/core'
+import { formatHelper, useGlobal } from '@/modules/core'
 import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function Playlist () {
   const { handleMoreTracks, loading, playlist, tracks } = usePlaylist()
-  const { handlePlay } = usePlayback()
+  const { handlePlay } = useGlobal()
 
   if (loading) return <Head><title>Musify</title></Head>
 

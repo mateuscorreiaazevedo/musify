@@ -74,7 +74,7 @@ export default function Search () {
           <h2 className="text-2xl font-bold mb-4">Músicas</h2>
           <ul className="w-full">
             {results.tracks?.items.map(item => (
-              <MusicSearchList key={item.id} {...item} />
+              <MusicSearchList key={item.id} item={item} onSearchPage />
             ))}
           </ul>
         </section>

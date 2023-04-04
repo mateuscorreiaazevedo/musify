@@ -1,12 +1,20 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { transparentize } from 'polished'
 import React from 'react'
+import { inputRange } from '../constants'
 
-export const HeaderBar = () => {
+type Props = {
+  color?: string
+  asDuotone?: boolean
+}
+
+export const HeaderBar = ({ color = '#111', asDuotone = false }: Props) => {
   const { scrollY } = useScroll()
+  const range = asDuotone ? inputRange : [0, 10, 100]
+  const opacity = asDuotone ? transparentize(0.2, color) : color
 
-  const background = useTransform(scrollY, [0, 10, 100], ['transparent', transparentize(1, '#111'), '#111'])
-  const backdropFilter = useTransform(scrollY, [0, 10, 100], ['none', 'blur(1px)', 'blur(6px)'])
+  const background = useTransform(scrollY, range, ['transparent', transparentize(1, color), opacity])
+  const backdropFilter = useTransform(scrollY, range, ['none', 'blur(1px)', 'blur(6px)'])
 
   return (
     <motion.div

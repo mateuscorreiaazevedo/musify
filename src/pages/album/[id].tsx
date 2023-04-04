@@ -1,13 +1,13 @@
 import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import { useAlbum } from '@/modules/albums'
-import { usePlayback } from '@/modules/core'
+import { useGlobal } from '@/modules/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
 
 export default function Album () {
   const { album, tracks, loading } = useAlbum()
-  const { handlePlay } = usePlayback()
+  const { handlePlay } = useGlobal()
 
   async function handlePlayAlbum (array: SpotifyApi.TrackObjectSimplified[]) {
     const uris = array?.map(item => item.uri)

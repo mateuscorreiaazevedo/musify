@@ -1,5 +1,5 @@
 import { CardPlaylist, useUserPlaylists } from '@/modules/playlists'
-import { HeaderBar, usePlayback } from '@/modules/core'
+import { HeaderBar, useGlobal } from '@/modules/core'
 import { useInView } from 'react-intersection-observer'
 import { useTracks } from '@/modules/collections'
 import { FaPlay } from 'react-icons/fa'
@@ -11,7 +11,7 @@ export default function Library () {
   const { playlists, refreshPlaylistsInView } = useUserPlaylists()
   const { likedTracks, totalTracks, loading } = useTracks()
   const { ref, inView, entry } = useInView()
-  const { handlePlay } = usePlayback()
+  const { handlePlay } = useGlobal()
 
   async function handlePlayLikedMusics () {
     const uris = likedTracks.map(item => item.track.uri)

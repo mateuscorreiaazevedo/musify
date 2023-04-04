@@ -1,7 +1,8 @@
-import React from 'react'
 import { useSpotify } from '../hooks/use-spotify'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
+import React from 'react'
+
 interface ContextProps {
   currentDevice: SpotifyApi.UserDevice
   playback: SpotifyApi.CurrentPlaybackResponse
@@ -9,6 +10,7 @@ interface ContextProps {
   handlePause: () => Promise<void>
   setCurrentDevice: React.Dispatch<React.SetStateAction<SpotifyApi.UserDevice>>
   handlePlayMusic: (arr: any[], i: number) => Promise<void>
+  country: string
 }
 
 const Context = React.createContext({} as ContextProps)
@@ -16,18 +18,40 @@ const Context = React.createContext({} as ContextProps)
 export const PlaybackProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentDevice, setCurrentDevice] = React.useState({} as SpotifyApi.UserDevice)
   const [playback, setPlayback] = React.useState({} as SpotifyApi.CurrentPlaybackResponse)
+  const [country, setCountry] = React.useState('')
   const { data: session } = useSession()
   const { spotifyApi } = useSpotify()
 
+  async function handlePlayback () {
+    try {
+      const response = await spotifyApi.getMyCurrentPlaybackState()
+      setPlayback(response.body)
+    } catch (error) {
+      console.error((error as any).message)
+    }
+  }
+
+  async function getCountry () {
+    const languageCode = navigator.language || [navigator.language]
+    let countryCode
+
+    if (languageCode.includes('-')) {
+      countryCode = languageCode.toString().split('-')[1]
+    } else {
+      countryCode = languageCode.toString()
+    }
+    setCountry(countryCode?.toUpperCase())
+  }
+
   React.useEffect(() => {
     if (session) {
-      const interval = setTimeout(async () => {
+      handlePlayback()
+      getCountry()
+      const interval = setInterval(async () => {
         try {
           const devices = await spotifyApi.getMyDevices()
           const current = devices.body.devices[0]
           setCurrentDevice(current!)
-          const response = await spotifyApi.getMyCurrentPlaybackState()
-          setPlayback(response.body)
         } catch (error) {
           console.error((error as any).message)
         }
@@ -62,13 +86,13 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
   }
 
   return (
-    <Context.Provider value={{ setCurrentDevice, currentDevice, playback, handlePlay, handlePause, handlePlayMusic }}>
+    <Context.Provider value={{ setCurrentDevice, country, currentDevice, playback, handlePlay, handlePause, handlePlayMusic }}>
       {children}
     </Context.Provider>
   )
 }
 
-export const usePlayback = () => {
+export const useGlobal = () => {
   const context = React.useContext(Context)
 
   if (!context) throw new Error('Error on Playback provider')

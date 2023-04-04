@@ -1,4 +1,4 @@
-import { usePlayback } from '@/modules/core'
+import { useGlobal } from '@/modules/core'
 import Link from 'next/link'
 import React from 'react'
 import { FaPlay } from 'react-icons/fa'
@@ -15,7 +15,7 @@ type Props = {
 
 export const Card = (props: Props) => {
   const { descriptionOrType, displayName, image, link, name, uri, isArtist = false } = props
-  const { handlePlay } = usePlayback()
+  const { handlePlay } = useGlobal()
 
   async function handlePlayed () {
     await handlePlay(uri!)
