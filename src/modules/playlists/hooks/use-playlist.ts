@@ -10,26 +10,32 @@ export const usePlaylist = () => {
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const { body } = await spotifyApi.getPlaylist(query.id as string)
-        setPlaylist(body)
-        setTracks(body.tracks.items)
-      } catch (error) {
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const { body } = await spotifyApi.getPlaylist(query.id as string)
+          setPlaylist(body)
+          setTracks(body.tracks.items)
+        } catch (error) {
+          push('/')
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [query.id])
 
   async function handleMoreTracks () {
-    try {
-      const response = await spotifyApi.getPlaylistTracks(query.id as string, { offset: tracks.length })
-      setTracks([...tracks, ...response.body.items])
-    } catch (error) {
-      push('/')
+    if (spotifyApi.getAccessToken()) {
+      try {
+        const response = await spotifyApi.getPlaylistTracks(query.id as string, {
+          offset: tracks.length
+        })
+        setTracks([...tracks, ...response.body.items])
+      } catch (error) {
+        push('/')
+      }
     }
   }
 

@@ -3,14 +3,24 @@ import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import React from 'react'
 
+interface PlayerProps {
+  play: () => Promise<void>
+  pause: () => Promise<void>
+  next: () => Promise<void>
+  previous: () => Promise<void>
+  shuffle: () => Promise<void>
+  repeat: () => Promise<void>
+}
+
 interface ContextProps {
   currentDevice: SpotifyApi.UserDevice
   playback: SpotifyApi.CurrentPlaybackResponse
   handlePlay: (trackUris: string[]) => Promise<void>
-  handlePause: () => Promise<void>
   setCurrentDevice: React.Dispatch<React.SetStateAction<SpotifyApi.UserDevice>>
   handlePlayMusic: (arr: any[], i: number) => Promise<void>
   country: string
+  player: PlayerProps
+  trackState: SpotifyApi.TrackObjectFull
 }
 
 const Context = React.createContext({} as ContextProps)
@@ -18,6 +28,7 @@ const Context = React.createContext({} as ContextProps)
 export const PlaybackProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentDevice, setCurrentDevice] = React.useState({} as SpotifyApi.UserDevice)
   const [playback, setPlayback] = React.useState({} as SpotifyApi.CurrentPlaybackResponse)
+  const [trackState, setTrackState] = React.useState({} as SpotifyApi.TrackObjectFull)
   const [country, setCountry] = React.useState('')
   const { data: session } = useSession()
   const { spotifyApi } = useSpotify()
@@ -26,6 +37,7 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
     try {
       const response = await spotifyApi.getMyCurrentPlaybackState()
       setPlayback(response.body)
+      setTrackState(response.body.item as SpotifyApi.TrackObjectFull)
     } catch (error) {
       console.error((error as any).message)
     }
@@ -44,13 +56,13 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
   }
 
   React.useEffect(() => {
-    if (session) {
-      handlePlayback()
+    if (session && spotifyApi.getAccessToken()) {
       getCountry()
       const interval = setInterval(async () => {
         try {
           const devices = await spotifyApi.getMyDevices()
           const current = devices.body.devices[0]
+          handlePlayback()
           setCurrentDevice(current!)
         } catch (error) {
           console.error((error as any).message)
@@ -61,23 +73,46 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
   }, [session, spotifyApi])
 
   async function handlePlay (trackUris: string[]) {
-    try {
-      await spotifyApi.play({ uris: trackUris, device_id: currentDevice.id! })
-    } catch (error) {
-      toast.error(
-        'Por favor, caso não possua dispositivo disponível, abra o site open.spotify.com para que o Spotify reconheça algum dispositivo como ativo'
-      )
+    if (spotifyApi.getAccessToken()) {
+      try {
+        await spotifyApi.play({ uris: trackUris, device_id: currentDevice.id! })
+      } catch (error) {
+        toast.error(
+          'Por favor, caso não possua dispositivo disponível, abra o site open.spotify.com para que o Spotify reconheça algum dispositivo como ativo'
+        )
+      }
     }
   }
 
-  async function handlePause () {
-    try {
-      await spotifyApi.pause()
-    } catch (error) {
-      toast.error(
-        'Por favor, caso não possua dispositivo disponível, abra o site open.spotify.com para que o Spotify reconheça algum dispositivo como ativo'
-      )
+  async function handleRepeat () {
+    if (spotifyApi.getAccessToken()) {
+      if (playback.repeat_state === 'off') {
+        await spotifyApi.setRepeat('context')
+      } else if (playback.repeat_state === 'context') {
+        await spotifyApi.setRepeat('track')
+      } else {
+        await spotifyApi.setRepeat('off')
+      }
     }
+  }
+
+  const player: PlayerProps = {
+    play: async () => {
+      spotifyApi.getAccessToken() && await spotifyApi.play({ device_id: currentDevice.id! })
+    },
+    pause: async () => {
+      spotifyApi.getAccessToken() && await spotifyApi.pause()
+    },
+    next: async () => {
+      spotifyApi.getAccessToken() && await spotifyApi.skipToNext()
+    },
+    previous: async () => {
+      spotifyApi.getAccessToken() && await spotifyApi.skipToPrevious()
+    },
+    shuffle: async () => {
+      spotifyApi.getAccessToken() && await spotifyApi.setShuffle(!playback.shuffle_state)
+    },
+    repeat: handleRepeat
   }
 
   async function handlePlayMusic (arr: any[], i: number) {
@@ -86,7 +121,18 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
   }
 
   return (
-    <Context.Provider value={{ setCurrentDevice, country, currentDevice, playback, handlePlay, handlePause, handlePlayMusic }}>
+    <Context.Provider
+      value={{
+        trackState,
+        setCurrentDevice,
+        country,
+        currentDevice,
+        playback,
+        handlePlay,
+        handlePlayMusic,
+        player
+      }}
+    >
       {children}
     </Context.Provider>
   )

@@ -29,9 +29,10 @@ export default function Playlist () {
       </Head>
       <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
-          {playlist.images && <img src={playlist.images[0].url} alt={playlist.description!} className="w-44" />}
+          {playlist.images && <img src={playlist.images[0].url} alt={playlist.description!} className="w-48 h-48 object-contain" />}
           <div>
-            <h1 className="text-5xl font-bold">{playlist.name}</h1>
+            <p className="w-full pr-44 text-justify font-bold capitalize">{playlist.type}</p>
+            <h1 className="text-4xl font-bold">{playlist.name}</h1>
             <p className="w-full pr-44 text-justify">{playlist.description}</p>
             <div className="flex gap-1 mt-2">
               <Link href={`/user/${playlist.owner?.id}`} className="font-bold hover:underline">

@@ -13,24 +13,26 @@ export const useArtist = (id: string, country?: string) => {
   const { push } = useRouter()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const response = await spotifyApi.getArtist(id)
-        const artistAlbums = await spotifyApi.getArtistAlbums(id)
-        const tracks = await spotifyApi.getArtistTopTracks(id, country!)
-        const related = await spotifyApi.getArtistRelatedArtists(id)
-        setArtist(response.body)
-        setAlbums(artistAlbums.body.items)
-        setTopTracks(tracks.body.tracks)
-        setRelatedArtists(related.body.artists)
-      } catch (error) {
-        toast.error((error as any).message)
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const response = await spotifyApi.getArtist(id)
+          const artistAlbums = await spotifyApi.getArtistAlbums(id)
+          const tracks = await spotifyApi.getArtistTopTracks(id, country!)
+          const related = await spotifyApi.getArtistRelatedArtists(id)
+          setArtist(response.body)
+          setAlbums(artistAlbums.body.items)
+          setTopTracks(tracks.body.tracks)
+          setRelatedArtists(related.body.artists)
+        } catch (error) {
+          toast.error((error as any).message)
+          push('/')
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [id, spotifyApi, country])
 
   return {

@@ -1,4 +1,6 @@
 export * from './button-play-all'
+export * from './primary-button'
+export * from './secondary-button'
 export * from './table-item'
 export * from './icon-link'
 export * from './popover'

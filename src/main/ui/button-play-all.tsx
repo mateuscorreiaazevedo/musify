@@ -17,7 +17,7 @@ export const ButtonPlay = ({ handlePlayLikedMusics, label }: Props) => {
   const scale = useTransform(scrollY, inputRange, [1.2, 1, 1])
 
   return (
-    <motion.section style={{ x, y }} className="sticky top-20 h-20 mt-20 flex items-center gap-4 z-20">
+    <motion.section style={{ x, y }} className="sticky w-[550px] top-20 h-20 mt-20 flex items-center gap-4 z-20">
       <motion.div
         style={{ scale }}
         className="bg-green-500 cursor-pointer flex w-16 h-16 items-center justify-center rounded-full"

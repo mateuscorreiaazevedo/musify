@@ -10,23 +10,25 @@ export const useAlbum = () => {
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const { body } = await spotifyApi.getAlbum(query.id as string)
-        setAlbum(body)
-        setTracks(body.tracks.items)
-      } catch (error) {
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const { body } = await spotifyApi.getAlbum(query.id as string)
+          setAlbum(body)
+          setTracks(body.tracks.items)
+        } catch (error) {
+          push('/')
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [query.id])
 
   return {
     album,
     loading,
-    tracks,
+    tracks
   }
 }

@@ -10,22 +10,24 @@ export const useAlbums = () => {
   const { push } = useRouter()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const { body } = await spotifyApi.getMySavedAlbums()
-        setTotal(body.total)
-        setAlbums(body.items)
-      } catch (error) {
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const { body } = await spotifyApi.getMySavedAlbums()
+          setTotal(body.total)
+          setAlbums(body.items)
+        } catch (error) {
+          push('/')
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [])
 
   async function handleMoreAlbums () {
-    if (!loading && albums.length < total) {
+    if (!loading && albums.length < total && spotifyApi.getAccessToken()) {
       const { body } = await spotifyApi.getMySavedAlbums({ offset: albums?.length })
 
       setAlbums([...albums, ...body.items])

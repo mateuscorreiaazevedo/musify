@@ -10,24 +10,26 @@ export const useArtists = () => {
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const response = await spotifyApi.getFollowedArtists()
-        setAfter(response.body.artists.cursors.after)
-        setArtists(response.body.artists.items)
-        setTotalArtists(response.body.artists.total!)
-      } catch (error) {
-        console.error((error as any).message)
-        toast.error((error as any).message)
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const response = await spotifyApi.getFollowedArtists()
+          setAfter(response.body.artists.cursors.after)
+          setArtists(response.body.artists.items)
+          setTotalArtists(response.body.artists.total!)
+        } catch (error) {
+          console.error((error as any).message)
+          toast.error((error as any).message)
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [])
 
   async function handleMoreArtists () {
-    if (artists.length < totalArtists) {
+    if (!loading && artists.length < totalArtists && spotifyApi.getAccessToken()) {
       try {
         const response = await spotifyApi.getFollowedArtists({ after })
         setArtists([...artists, ...response.body.artists.items])

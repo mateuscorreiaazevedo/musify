@@ -37,6 +37,7 @@ export default function Album () {
         <section className="mt-20 gap-4 flex justify-start items-end">
           {album.images && <img src={album.images[0].url} alt={album.name!} className="w-44 shadow-lg" />}
           <div>
+            <p className="w-full pr-44 text-justify font-bold capitalize">{album.type}</p>
             <h1 className="text-5xl font-bold">{album.name}</h1>
             <p className="w-full pr-44 text-justify">{album.genres}</p>
             <div className="flex gap-1 mt-2">

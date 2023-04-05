@@ -10,22 +10,24 @@ export const useTracks = () => {
   const { push } = useRouter()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const { body } = await spotifyApi.getMySavedTracks()
-        setTotalTracks(body.total)
-        setLikedTracks(body.items)
-      } catch (error) {
-        push('/')
-      } finally {
-        setLoading(false)
-      }
-    })()
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const { body } = await spotifyApi.getMySavedTracks()
+          setTotalTracks(body.total)
+          setLikedTracks(body.items)
+        } catch (error) {
+          push('/')
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
   }, [])
 
   async function handleMoreTracks () {
-    if (!loading) {
+    if (!loading && spotifyApi.getAccessToken()) {
       const { body } = await spotifyApi.getMySavedTracks({ offset: likedTracks?.length })
       setLikedTracks([...likedTracks, ...body.items])
     }
