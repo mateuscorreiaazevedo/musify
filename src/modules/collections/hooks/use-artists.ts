@@ -1,4 +1,5 @@
 import { useSpotify } from '@/modules/core'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -7,6 +8,8 @@ export const useArtists = () => {
   const [totalArtists, setTotalArtists] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
   const [after, setAfter] = React.useState('')
+  const { data: session } = useSession()
+
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
@@ -26,7 +29,7 @@ export const useArtists = () => {
         }
       })()
     }
-  }, [])
+  }, [session])
 
   async function handleMoreArtists () {
     if (!loading && artists.length < totalArtists && spotifyApi.getAccessToken()) {

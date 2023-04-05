@@ -1,4 +1,5 @@
 import { useSpotify } from '@/modules/core'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -7,6 +8,7 @@ export const usePlaylist = () => {
   const [playlist, setPlaylist] = React.useState({} as SpotifyApi.SinglePlaylistResponse)
   const [tracks, setTracks] = React.useState<SpotifyApi.PlaylistTrackObject[]>([])
   const { query, push } = useRouter()
+  const { data: session } = useSession()
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
@@ -24,7 +26,7 @@ export const usePlaylist = () => {
         }
       })()
     }
-  }, [query.id])
+  }, [query.id, session])
 
   async function handleMoreTracks () {
     if (spotifyApi.getAccessToken()) {

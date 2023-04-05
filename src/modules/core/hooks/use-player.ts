@@ -79,6 +79,38 @@ export const usePlayer = () => {
         }
       }
     },
+    volumeUp: async (percent: number) => {
+      if (spotifyApi.getAccessToken()) {
+        if (spotifyApi.getAccessToken()) {
+          try {
+            if (percent < 100) {
+              await spotifyApi.setVolume(percent + 1)
+            } else {
+              await spotifyApi.setVolume(100)
+            }
+          } catch (error) {
+            console.error((error as any).message)
+            toast.error((error as any).message)
+          }
+        }
+      }
+    },
+    volumeDown: async (percent: number) => {
+      if (spotifyApi.getAccessToken()) {
+        if (spotifyApi.getAccessToken()) {
+          try {
+            if (percent > 0) {
+              await spotifyApi.setVolume(percent - 1)
+            } else {
+              await spotifyApi.setVolume(0)
+            }
+          } catch (error) {
+            console.error((error as any).message)
+            toast.error((error as any).message)
+          }
+        }
+      }
+    }
   }
 
   return {
