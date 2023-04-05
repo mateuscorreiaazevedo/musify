@@ -83,6 +83,7 @@ export default function Artist () {
                 link={`/artist/${item.id}`}
                 name={item.name}
                 descriptionOrType={item.type}
+                isArtist
               />
             ))}
           </ul>

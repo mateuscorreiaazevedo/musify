@@ -24,7 +24,7 @@ export const Card = (props: Props) => {
   return (
     <div className="relative p-3 bg-zinc-800 w-52 hover:bg-zinc-700 transition-colors rounded-md h-64 group/item mx-4">
       <Link href={link} className="flex flex-col gap-px">
-        <img src={image} alt={name} className={`mx-auto h-40 w-40 object-contain shadow-2xl ${isArtist ? 'rounded-full' : 'rounded-sm'}`} />
+        <img src={image} alt={name} className={`mx-auto h-40 w-40 shadow-2xl ${isArtist ? 'rounded-full object-cover' : 'rounded-sm object-contain'}`} />
         <h2 className="text-xl font-bold truncate">{name}</h2>
         <p className="text-zinc-400 truncate">{descriptionOrType}</p>
         {displayName && <p className="text-zinc-400 text-sm">De {displayName}</p>}

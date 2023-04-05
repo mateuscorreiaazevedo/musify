@@ -1,16 +1,8 @@
 import { useSpotify } from '../hooks/use-spotify'
+import { usePlayer } from '../hooks/use-player'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import React from 'react'
-
-interface PlayerProps {
-  play: () => Promise<void>
-  pause: () => Promise<void>
-  next: () => Promise<void>
-  previous: () => Promise<void>
-  shuffle: () => Promise<void>
-  repeat: () => Promise<void>
-}
 
 interface ContextProps {
   currentDevice: SpotifyApi.UserDevice
@@ -29,6 +21,7 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
   const [currentDevice, setCurrentDevice] = React.useState({} as SpotifyApi.UserDevice)
   const [playback, setPlayback] = React.useState({} as SpotifyApi.CurrentPlaybackResponse)
   const [trackState, setTrackState] = React.useState({} as SpotifyApi.TrackObjectFull)
+  const { player } = usePlayer()
   const [country, setCountry] = React.useState('')
   const { data: session } = useSession()
   const { spotifyApi } = useSpotify()
@@ -82,37 +75,6 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
         )
       }
     }
-  }
-
-  async function handleRepeat () {
-    if (spotifyApi.getAccessToken()) {
-      if (playback.repeat_state === 'off') {
-        await spotifyApi.setRepeat('context')
-      } else if (playback.repeat_state === 'context') {
-        await spotifyApi.setRepeat('track')
-      } else {
-        await spotifyApi.setRepeat('off')
-      }
-    }
-  }
-
-  const player: PlayerProps = {
-    play: async () => {
-      spotifyApi.getAccessToken() && await spotifyApi.play({ device_id: currentDevice.id! })
-    },
-    pause: async () => {
-      spotifyApi.getAccessToken() && await spotifyApi.pause()
-    },
-    next: async () => {
-      spotifyApi.getAccessToken() && await spotifyApi.skipToNext()
-    },
-    previous: async () => {
-      spotifyApi.getAccessToken() && await spotifyApi.skipToPrevious()
-    },
-    shuffle: async () => {
-      spotifyApi.getAccessToken() && await spotifyApi.setShuffle(!playback.shuffle_state)
-    },
-    repeat: handleRepeat
   }
 
   async function handlePlayMusic (arr: any[], i: number) {
