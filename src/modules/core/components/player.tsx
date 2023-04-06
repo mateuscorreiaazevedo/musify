@@ -154,17 +154,18 @@ export const Player = () => {
         </div>
       </div>
       <div className="flex gap-4 items-center">
-      <Slider.Root
-            className="relative flex items-center w-20 h-5"
-            onValueChange={handleVolume}
-            aria-label="Volume"
-            value={[playback.device.volume_percent!]}
-            step={1}
-          >
-            <Slider.Track className="bg-blackA10 relative grow rounded-full h-1 bg-zinc-400">
-              <Slider.Range className="absolute bg-white rounded-full h-full" />
-            </Slider.Track>
-          </Slider.Root>
+        <Slider.Root
+          className="group/volume relative flex items-center w-20 h-5"
+          onValueChange={handleVolume}
+          aria-label="Volume"
+          value={[playback?.device?.volume_percent as number]}
+          step={1}
+        >
+          <Slider.Track className="bg-blackA10 relative grow rounded-full h-1 bg-zinc-400">
+            <Slider.Range className="absolute bg-white group-hover/volume:bg-green-500 rounded-full h-full" />
+          </Slider.Track>
+          <Slider.Thumb className="block group-hover/volume:w-3 group-hover/volume:h-3 bg-white rounded-[10px] outline-none" />
+        </Slider.Root>
       </div>
     </footer>
   )
