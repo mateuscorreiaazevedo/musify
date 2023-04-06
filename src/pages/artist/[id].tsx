@@ -44,6 +44,7 @@ export default function Artist () {
             />
           )}
           <div>
+            <p className="w-full pr-44 pt-2 text-justify font-bold capitalize">{artist.type}</p>
             <h1 className="text-5xl font-bold">{artist.name}</h1>
             <p className="w-full pr-44 pt-2 text-justify">{followers} seguidores</p>
           </div>
@@ -82,6 +83,7 @@ export default function Artist () {
                 link={`/artist/${item.id}`}
                 name={item.name}
                 descriptionOrType={item.type}
+                isArtist
               />
             ))}
           </ul>

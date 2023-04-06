@@ -1,4 +1,5 @@
 import { useSpotify } from '@/modules/core'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -7,27 +8,31 @@ export const useArtists = () => {
   const [totalArtists, setTotalArtists] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
   const [after, setAfter] = React.useState('')
+  const { data: session } = useSession()
+
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
-    (async () => {
-      setLoading(true)
-      try {
-        const response = await spotifyApi.getFollowedArtists()
-        setAfter(response.body.artists.cursors.after)
-        setArtists(response.body.artists.items)
-        setTotalArtists(response.body.artists.total!)
-      } catch (error) {
-        console.error((error as any).message)
-        toast.error((error as any).message)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
+    if (spotifyApi.getAccessToken()) {
+      (async () => {
+        setLoading(true)
+        try {
+          const response = await spotifyApi.getFollowedArtists()
+          setAfter(response.body.artists.cursors.after)
+          setArtists(response.body.artists.items)
+          setTotalArtists(response.body.artists.total!)
+        } catch (error) {
+          console.error((error as any).message)
+          toast.error((error as any).message)
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
+  }, [session])
 
   async function handleMoreArtists () {
-    if (artists.length < totalArtists) {
+    if (!loading && artists.length < totalArtists && spotifyApi.getAccessToken()) {
       try {
         const response = await spotifyApi.getFollowedArtists({ after })
         setArtists([...artists, ...response.body.artists.items])
