@@ -1,7 +1,7 @@
 import { useInView } from 'react-intersection-observer'
 import { useArtists } from '@/modules/collections'
+import { CardArtist } from '@/modules/artists'
 import { HeaderBar } from '@/modules/core'
-import { Card } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 
@@ -33,14 +33,14 @@ export default function Artists () {
         <h1 className="text-2xl font-bold">Artistas</h1>
         <section className="container grid md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 mt-4 gap-4">
           {artists.map(item => (
-            <Card
-              key={item.id}
-              isArtist
-              descriptionOrType={item.type}
-              image={item.images[0]?.url}
-              link={`/artist/${item.id}`}
-              name={item.name}
-            />
+            <CardArtist
+            key={item.id}
+            type={item.type!}
+            image={item.images[0]?.url}
+            link={`/artist/${item.id}`}
+            name={item.name}
+            id={item.id}
+          />
           ))}
         </section>
         <div ref={ref} />

@@ -9,12 +9,14 @@ interface ContextProps {
   handlePlayMusic: (arr: any[], i: number) => Promise<void>
   country: string
   trackState: SpotifyApi.TrackObjectFull
+  currentDevice: SpotifyApi.UserDevice
 }
 
 const Context = React.createContext({} as ContextProps)
 
 export const PlaybackProvider = ({ children }: { children: React.ReactNode }) => {
   const [playback, setPlayback] = React.useState({} as SpotifyApi.CurrentPlaybackResponse)
+  const [currentDevice, setCurrentDevice] = React.useState({} as SpotifyApi.UserDevice)
   const [trackState, setTrackState] = React.useState({} as SpotifyApi.TrackObjectFull)
   const [country, setCountry] = React.useState('')
   const { data: session } = useSession()
@@ -38,8 +40,9 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
       const interval = setInterval(async () => {
         try {
           const response = await spotifyApi.getMyCurrentPlaybackState()
-          setPlayback(response.body)
           setTrackState(response.body.item as SpotifyApi.TrackObjectFull)
+          setPlayback(response.body)
+          setCurrentDevice(response.body.device!)
         } catch (error) {
           console.error((error as any).message)
         }
@@ -73,6 +76,7 @@ export const PlaybackProvider = ({ children }: { children: React.ReactNode }) =>
         playback,
         handlePlay,
         handlePlayMusic,
+        currentDevice
       }}
     >
       {children}

@@ -13,6 +13,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import * as Slider from '@radix-ui/react-slider'
+import { DevicesPopover } from './devices-popover'
 
 export const Player = () => {
   const [percentage, setPercentage] = React.useState(0)
@@ -139,7 +140,7 @@ export const Player = () => {
         <div className="flex gap-2 items-center justify-center">
           <span className="text-xs">{formatHelper.formatDuration(progress)}</span>
           <Slider.Root
-            className="relative flex items-center w-80 h-5"
+            className="group/progress relative flex items-center w-80 h-5"
             onValueChange={handleChangeProgress}
             aria-label="Music-progress"
             value={[progress]}
@@ -147,13 +148,14 @@ export const Player = () => {
             step={1}
           >
             <Slider.Track className="bg-blackA10 relative grow rounded-full h-1 bg-zinc-400">
-              <Slider.Range className="absolute bg-white rounded-full h-full" />
+              <Slider.Range className="absolute bg-white group-hover/progress:bg-green-400 rounded-full h-full" />
             </Slider.Track>
+            <Slider.Thumb className="block cursor-pointer group-hover/progress:w-3 group-hover/progress:h-3 bg-white rounded-[10px] outline-none" />
           </Slider.Root>
           <span className="text-xs">{formatHelper.formatDuration(duration)}</span>
         </div>
       </div>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-6 items-center">
         <Slider.Root
           className="group/volume relative flex items-center w-20 h-5"
           onValueChange={handleVolume}
@@ -162,10 +164,11 @@ export const Player = () => {
           step={1}
         >
           <Slider.Track className="bg-blackA10 relative grow rounded-full h-1 bg-zinc-400">
-            <Slider.Range className="absolute bg-white group-hover/volume:bg-green-500 rounded-full h-full" />
+            <Slider.Range className="absolute bg-white group-hover/volume:bg-green-400 rounded-full h-full" />
           </Slider.Track>
-          <Slider.Thumb className="block group-hover/volume:w-3 group-hover/volume:h-3 bg-white rounded-[10px] outline-none" />
+          <Slider.Thumb className="block cursor-pointer group-hover/volume:w-3 group-hover/volume:h-3 bg-white rounded-[10px] outline-none" />
         </Slider.Root>
+        <DevicesPopover />
       </div>
     </footer>
   )

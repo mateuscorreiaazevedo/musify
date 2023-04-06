@@ -1,29 +1,28 @@
-import { useSession } from 'next-auth/react'
-import { useSpotify } from '@/modules/core'
 import { Card } from '@/main/ui'
+import { useGlobal, useSpotify } from '@/modules/core'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 
 type Props = {
   image: string
   name: string
-  description: string
-  displayName?: string
+  type: string
   link: string
   id: string
 }
 
-export const CardPlaylist = (props: Props) => {
-  const { description, id, image, link, name, displayName } = props
+export const CardArtist = (props: Props) => {
+  const { type, id, image, link, name } = props
   const [uris, setUris] = React.useState<string[]>([])
+  const { country } = useGlobal()
   const { data: session } = useSession()
-
   const { spotifyApi } = useSpotify()
 
   React.useEffect(() => {
     if (id) {
       (async () => {
-        const response = await spotifyApi.getPlaylistTracks(id)
-        const trackUris = response.body.items.map(item => item.track?.uri)
+        const response = await spotifyApi.getArtistTopTracks(id, country)
+        const trackUris = response.body.tracks.map(item => item?.uri)
         setUris(trackUris as string[])
       })()
     }
@@ -31,12 +30,12 @@ export const CardPlaylist = (props: Props) => {
 
   return (
     <Card
-      descriptionOrType={description}
+      descriptionOrType={type}
       image={image}
       link={link}
       name={name}
-      displayName={displayName}
       uri={uris}
+      isArtist
     />
   )
 }

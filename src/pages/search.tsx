@@ -2,11 +2,11 @@ import { HeaderBar, useDebounce, useSpotify } from '@/modules/core'
 import { MusicSearchList } from '@/main/components'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { Card } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 import { CardPlaylist } from '@/modules/playlists'
 import { CardAlbum } from '@/modules/albums'
+import { CardArtist } from '@/modules/artists'
 
 export default function Search () {
   const [results, setResults] = React.useState({} as SpotifyApi.SearchResponse)
@@ -83,13 +83,13 @@ export default function Search () {
           <h2 className="text-2xl font-bold mb-4">Artistas</h2>
           <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
             {results.artists?.items.map(item => (
-              <Card
+              <CardArtist
                 key={item.id}
-                descriptionOrType={item.type as string}
+                type={item.type!}
                 image={item.images[0]?.url}
                 link={`/artist/${item.id}`}
                 name={item.name}
-                isArtist
+                id={item.id}
               />
             ))}
           </ul>
