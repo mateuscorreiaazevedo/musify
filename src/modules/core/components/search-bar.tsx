@@ -3,19 +3,24 @@ import { useRouter } from 'next/router'
 import React from 'react'
 
 export const SearchBar = () => {
-  const [search, setSearch] = React.useState('')
-  const { push, pathname } = useRouter()
+  const { push, pathname, query } = useRouter()
+  const [search, setSearch] = React.useState(query.q! as string)
 
   React.useEffect(() => {
-    if (search.length) {
+    if (search?.length) {
       push({
         pathname,
         query: {
           q: search
         }
       })
-    } else if (!search.length) push({ pathname })
+    }
   }, [search])
+
+  const handleClearSearchbar = () => {
+    push({ pathname })
+    setSearch('')
+  }
 
   return (
     <>
@@ -28,7 +33,7 @@ export const SearchBar = () => {
           className="outline-none w-full h-full bg-transparent"
           onChange={e => setSearch(e.target.value)}
         />
-        <BsX className={`fill-black text-6xl cursor-pointer ${search.length ? 'visible' : 'invisible'}`} onClick={() => setSearch('')} />
+        <BsX className={`fill-black text-6xl cursor-pointer ${search?.length ? 'visible' : 'invisible'}`} onClick={handleClearSearchbar} />
       </div>
     </>
   )

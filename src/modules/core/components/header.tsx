@@ -21,7 +21,7 @@ export const Header = () => {
             onClick={back}
           />
         </div>
-        {pathname === '/search' && <SearchBar />}
+        {pathname.includes('/search') && <SearchBar />}
         {pathname.includes('/collection') && pathname !== '/collection/tracks' && <HeaderCollection />}
       </div>
       <Popover.Root>
