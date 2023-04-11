@@ -1,12 +1,17 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { FaPlay } from 'react-icons/fa'
 import React from 'react'
-import { inputRange } from '@/modules/core'
 
 type Props = {
   handlePlayLikedMusics: () => void
   label: string
 }
+
+const inputRange = [
+  0,
+  0,
+  200
+]
 
 export const ButtonPlay = ({ handlePlayLikedMusics, label }: Props) => {
   const { scrollY } = useScroll()
