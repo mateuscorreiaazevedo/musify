@@ -43,7 +43,14 @@ export default function Tracks () {
           </span>
           <div>
             <h1 className="text-5xl font-bold">Músicas Curtidas</h1>
-            <div className="flex gap-1 mt-2">
+            <div className="flex gap-1 items-center mt-2">
+              {me.images && (
+                <img
+                  src={me.images[0].url}
+                  alt={me.display_name}
+                  className="w-7 h-7 rounded-full object-cover"
+                />
+              )}
               <Link href={`/user/${me.id}`} className="hover:underline">
                 <p className="font-bold">{me.display_name}</p>
               </Link>
@@ -52,10 +59,7 @@ export default function Tracks () {
             </div>
           </div>
         </section>
-        <ButtonPlay
-          handlePlayLikedMusics={handlePlayLikedMusics}
-          label='Músicas Curtidas'
-        />
+        <ButtonPlay handlePlayLikedMusics={handlePlayLikedMusics} label="Músicas Curtidas" />
         <Table intercectionFuntion={handleMoreTracks} primaryColor="#402E7D">
           {likedTracks.map((item, index: number) => (
             <TableItem

@@ -46,6 +46,42 @@ export const Header = () => {
               <li className="w-full">
                 <button
                   className="hover:bg-zinc-700 w-full text-start py-1 px-2 rounded-lg transition-colors"
+                >
+                  <a href="https://linkedin.com/in/mateuscorreiaazevedo" target='_blank' rel="noreferrer">
+                  LinkedIn
+                  </a>
+                </button>
+              </li>
+              <li className="w-full">
+                <button
+                  className="hover:bg-zinc-700 w-full text-start py-1 px-2 rounded-lg transition-colors"
+                >
+                  <a href="https://instagram.com/mateuscorreiaazevedo" target='_blank' rel="noreferrer">
+                  Instagram
+                  </a>
+                </button>
+              </li>
+              <li className="w-full">
+                <button
+                  className="hover:bg-zinc-700 w-full text-start py-1 px-2 rounded-lg transition-colors"
+                >
+                  <a href="https://github.com/mateuscorreiaazevedo" target='_blank' rel="noreferrer">
+                  Github
+                  </a>
+                </button>
+              </li>
+              <li className="w-full">
+                <button
+                  className="hover:bg-zinc-700 w-full text-start py-1 px-2 rounded-lg transition-colors"
+                >
+                  <a href="https://mateusdev.com.br" target='_blank' rel="noreferrer">
+                  Portfólio
+                  </a>
+                </button>
+              </li>
+              <li className="w-full">
+                <button
+                  className="hover:bg-zinc-700 w-full text-start py-1 px-2 rounded-lg transition-colors"
                   onClick={() => signOut({ callbackUrl: '/login' })}
                 >
                   Sair

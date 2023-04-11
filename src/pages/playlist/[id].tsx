@@ -4,9 +4,11 @@ import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
+import { useUser } from '@/modules/user'
 
 export default function Playlist () {
   const { handleMoreTracks, loading, playlist, tracks } = usePlaylist()
+  const { user } = useUser(playlist.owner?.id)
   const { handlePlay } = useGlobal()
 
   if (loading) return <Head><title>Musify</title></Head>
@@ -34,7 +36,14 @@ export default function Playlist () {
             <p className="w-full pr-44 text-justify font-bold capitalize">{playlist.type}</p>
             <h1 className="text-4xl font-bold">{playlist.name}</h1>
             <p className="w-full pr-44 text-justify">{playlist.description}</p>
-            <div className="flex gap-1 mt-2">
+            <div className="flex gap-1 items-center mt-2">
+            {user.images && (
+                <img
+                  src={user.images[0]?.url ?? user.images[1]?.url}
+                  alt={user.display_name}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+            )}
               <Link href={`/user/${playlist.owner?.id}`} className="font-bold hover:underline">
                 {playlist.owner?.display_name}
               </Link>
