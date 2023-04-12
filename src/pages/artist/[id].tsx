@@ -36,7 +36,7 @@ export default function Artist () {
       </Head>
       <div className="absolute inset-0 pl-64 h-2/3 bg-gradient-to-b from-[#BC1A38] to-transparent" />
       <HeaderBar color="#B91C37" asDuotone />
-      <article className="container relative">
+      <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
           {artist.images && (
             <Image
