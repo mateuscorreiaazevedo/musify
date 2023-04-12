@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import React from 'react'
 import { useGlobal } from '@/modules/core'
+import Image from 'next/image'
 
 export default function Tracks () {
   const { handleMoreTracks, likedTracks, loading, totalTracks } = useTracks()
@@ -45,9 +46,12 @@ export default function Tracks () {
             <h1 className="text-5xl font-bold">Músicas Curtidas</h1>
             <div className="flex gap-1 items-center mt-2">
               {me.images && (
-                <img
+                <Image
+                  width={200}
+                  height={200}
+                  loading='lazy'
                   src={me.images[0].url}
-                  alt={me.display_name}
+                  alt={me.display_name!}
                   className="w-7 h-7 rounded-full object-cover"
                 />
               )}

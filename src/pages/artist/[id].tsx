@@ -7,6 +7,7 @@ import { ButtonPlay } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
 import { CardPlaylist } from '@/modules/playlists'
+import Image from 'next/image'
 
 export default function Artist () {
   const { handlePlay } = useGlobal()
@@ -38,7 +39,10 @@ export default function Artist () {
       <article className="container relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
           {artist.images && (
-            <img
+            <Image
+              width={200}
+              height={200}
+              loading='lazy'
               src={artist.images[0].url}
               alt={artist.name!}
               className="w-60 h-60 object-cover shadow-2xl rounded-full"

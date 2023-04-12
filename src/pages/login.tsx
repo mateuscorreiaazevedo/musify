@@ -27,8 +27,9 @@ export default function Login ({ providers }: Props) {
         <Image
           src='https://cdn.worldvectorlogo.com/logos/spotify-2.svg'
           alt='Spotify logo'
-          width={100}
-          height={100}
+          width={200}
+          height={200}
+          loading='lazy'
           className='w-40'
         />
         <button

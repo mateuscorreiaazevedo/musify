@@ -2,6 +2,7 @@ import { formatHelper } from '@/modules/core'
 import { FaPlay } from 'react-icons/fa'
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Props = {
   index: number
@@ -26,7 +27,7 @@ export const TableItem = (props: Props) => {
       <td className="pl-4">{index + 1}</td>
       <td className="flex gap-2 py-2 text-zinc-300 hover:text-white cursor-pointer">
         <div className="relative">
-          <img src={image} alt={albumName} className="min-w-10 h-10 object-contain" />
+          <Image loading='lazy' width={200} height={200} src={image!} alt={albumName!} className="w-10 h-10 object-contain" />
           <div className="hidden cursor-pointer transition-all absolute inset-0 w-10 h-10 group-hover/item:flex items-center justify-center bg-zinc-800/90">
             <FaPlay className="fill-zinc-100" onClick={handlePlayed} />
           </div>

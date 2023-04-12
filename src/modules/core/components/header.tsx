@@ -29,10 +29,11 @@ export const Header = () => {
           <ul className="mr-10 pr-4 hover:bg-zinc-800 transition-colors w-52 flex gap-2 bg-black rounded-full p-0.5 items-center justify-between">
             {session?.user?.image && (
               <Image
+                width={200}
+                height={200}
+                loading='lazy'
                 src={session.user.image}
                 alt={session.user.name!}
-                width={100}
-                height={100}
                 className="w-9 rounded-full"
               />
             )}

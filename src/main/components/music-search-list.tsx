@@ -3,6 +3,7 @@ import { FaPlay } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 import React from 'react'
+import Image from 'next/image'
 
 type Props = {
   item: SpotifyApi.TrackObjectFull
@@ -33,7 +34,7 @@ export const MusicSearchList = ({ item, onSearchPage = false, handlePlayed }: Pr
   return (
     <li className="w-full cursor-default flex gap-2 items-center rounded text-zinc-400 hover:bg-zinc-700 px-4 py-1 group/track">
       <div className="relative">
-        <img src={item?.album?.images[0]?.url} alt={item.album.name} className="w-10 h-10" />
+        <Image width={200} height={200} loading='lazy' src={item?.album?.images[0]?.url} alt={item.album.name} className="w-10 h-10" />
         <div className="hidden cursor-pointer transition-all absolute inset-0 w-10 h-10 group-hover/track:flex items-center justify-center bg-zinc-800/50">
           <FaPlay className="fill-zinc-100" onClick={() => handlePlayedMusic([item.uri])} />
         </div>
