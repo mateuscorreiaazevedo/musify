@@ -8,9 +8,9 @@ import Head from 'next/head'
 import React from 'react'
 
 export default function Artist () {
+  const { handlePlay } = useGlobal()
   const { query } = useRouter()
-  const { country, handlePlay } = useGlobal()
-  const { artist, albums, loading, topTracks, relatedArtists } = useArtist(query.id as string, country)
+  const { artist, albums, loading, topTracks, relatedArtists } = useArtist(query.id as string)
 
   const followers = formatHelper.formatNumber(artist.followers?.total)
 

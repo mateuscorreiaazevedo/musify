@@ -41,7 +41,7 @@ export const DevicesPopover = () => {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <MdDevices className="text-xl" title='Dispositivos' />
+        <MdDevices className="text-xl" title="Dispositivos" />
       </Popover.Trigger>
       <PopoverUI>
         <nav className="w-52 mr-10 mb-10 rounded-lg py-4 px-1 h-full bg-zinc-700">
@@ -49,10 +49,14 @@ export const DevicesPopover = () => {
             {devices.map(device => (
               <li key={device.id} className="w-full" onClick={() => handleDevice(device)}>
                 <button className="hover:bg-zinc-600 w-full text-start py-1 px-2 rounded-lg transition-colors">
-                  <span className={`flex items-center justify-start gap-2 ${currentDevice === device?.id ? 'text-green-400' : ''}`}>
-                    {device.type === 'Computer' && <BsLaptop />}
-                    {device.type === 'Speaker' && <BsSpeaker />}
-                    {device.name}
+                  <span
+                    className={`flex items-center justify-start gap-2 ${
+                      currentDevice === device?.id ? 'text-green-400' : ''
+                    }`}
+                  >
+                    {device.type === 'Computer' && <BsLaptop className='text-lg w-5 h-5' />}
+                    {device.type === 'Speaker' && <BsSpeaker className='text-lg w-5 h-5' />}
+                    <span className='truncate'>{device.name}</span>
                   </span>
                 </button>
               </li>

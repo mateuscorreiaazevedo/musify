@@ -89,12 +89,12 @@ export const Player = () => {
 
   return (
     <footer className="flex px-10 items-center justify-between fixed z-50 bottom-0 p-2 border-t border-t-zinc-700 w-full bg-zinc-800 h-[8vh]">
-      <div className="flex gap-2 w-60">
+      <div className="flex gap-2 w-80">
         {!!trackState && (
           <>
             <img src={trackState?.album?.images[0]?.url} className="w-14 h-14 object-contain" />
             <div className="mt-1">
-              <h4 className="whitespace-nowrap font-semibold hover:underline">
+              <h4 className="truncate w-80 font-semibold hover:underline">
                 <Link href={`/album/${trackState.album?.id}`}>{trackState?.name}</Link>
               </h4>
               <span className="text-sm whitespace-nowrap flex gap-1">
