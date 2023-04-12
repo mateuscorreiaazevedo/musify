@@ -1,12 +1,13 @@
 import { formatHelper } from '@/modules/core'
 import { FaPlay } from 'react-icons/fa'
 import React from 'react'
+import Link from 'next/link'
 
 type Props = {
   index: number
   image?: string
   name?: string
-  artists?: { name: string }[]
+  artists?: { name: string; id: string }[]
   albumName?: string
   addedAt?: string
   duration?: number | string
@@ -24,16 +25,20 @@ export const TableItem = (props: Props) => {
     <tr className="group/item hover:bg-zinc-700 transition-colors">
       <td className="pl-4">{index + 1}</td>
       <td className="flex gap-2 py-2 text-zinc-300 hover:text-white cursor-pointer">
-        <div className='relative'>
+        <div className="relative">
           <img src={image} alt={albumName} className="min-w-10 h-10 object-contain" />
           <div className="hidden cursor-pointer transition-all absolute inset-0 w-10 h-10 group-hover/item:flex items-center justify-center bg-zinc-800/90">
             <FaPlay className="fill-zinc-100" onClick={handlePlayed} />
           </div>
         </div>
         <div>
-          <h3 className='truncate w-72'>{name}</h3>
+          <h3 className="truncate w-72">{name}</h3>
           <p className="text-zinc-500 text-sm truncate md:w-44 lg:w-60 xl:w-72 2xl:w-full">
-            {artists?.map(({ name }) => name).join(', ')}
+            {artists?.map(({ name, id }) => (
+              <Link key={id} href={`/artist/${id}`} className='hover:underline pr-1'>
+                {name}
+              </Link>
+            ))}
           </p>
         </div>
       </td>

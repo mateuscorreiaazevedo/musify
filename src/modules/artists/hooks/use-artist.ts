@@ -10,10 +10,11 @@ export const useArtist = (id: string) => {
   const [albums, setAlbums] = React.useState<SpotifyApi.AlbumObjectSimplified[]>([])
   const [topTracks, setTopTracks] = React.useState<SpotifyApi.TrackObjectFull[]>([])
   const [artist, setArtist] = React.useState({} as SpotifyApi.SingleArtistResponse)
+  const [playlists, setPlaylists] = React.useState<SpotifyApi.PlaylistObjectSimplified[]>([])
   const [loading, setLoading] = React.useState(false)
   const { data: session } = useSession()
-  const { me } = useMe()
   const { country } = useGlobal()
+  const { me } = useMe()
 
   const { spotifyApi } = useSpotify()
   const { push } = useRouter()
@@ -27,10 +28,12 @@ export const useArtist = (id: string) => {
           const artistAlbums = await spotifyApi.getArtistAlbums(id)
           const tracks = await spotifyApi.getArtistTopTracks(id, country)
           const related = await spotifyApi.getArtistRelatedArtists(id)
+          const playlists = await spotifyApi.searchPlaylists(`This is ${response.body.name}`, { limit: 3 })
           setArtist(response.body)
           setAlbums(artistAlbums.body.items)
           setTopTracks(tracks.body.tracks)
           setRelatedArtists(related.body.artists)
+          setPlaylists(playlists.body.playlists!.items)
         } catch (error) {
           toast.error((error as any).message)
           push('/')
@@ -46,6 +49,7 @@ export const useArtist = (id: string) => {
     loading,
     albums,
     topTracks,
-    relatedArtists
+    relatedArtists,
+    playlists
   }
 }

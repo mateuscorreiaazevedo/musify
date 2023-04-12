@@ -1,16 +1,17 @@
 import { HeaderBar, formatHelper, useGlobal } from '@/modules/core'
+import { CardArtist, useArtist } from '@/modules/artists'
 import { MusicSearchList } from '@/main/components'
-import { useArtist } from '@/modules/artists'
 import { CardAlbum } from '@/modules/albums'
-import { ButtonPlay, Card } from '@/main/ui'
 import { useRouter } from 'next/router'
+import { ButtonPlay } from '@/main/ui'
 import Head from 'next/head'
 import React from 'react'
+import { CardPlaylist } from '@/modules/playlists'
 
 export default function Artist () {
   const { handlePlay } = useGlobal()
   const { query } = useRouter()
-  const { artist, albums, loading, topTracks, relatedArtists } = useArtist(query.id as string)
+  const { artist, albums, loading, topTracks, relatedArtists, playlists } = useArtist(query.id as string)
 
   const followers = formatHelper.formatNumber(artist.followers?.total)
 
@@ -60,7 +61,7 @@ export default function Artist () {
         </section>
         <section className="w-full mt-32">
           <h2 className="text-2xl font-bold mb-4">Discografia</h2>
-          <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
+          <ul className="grid grid-flow-col gap-2 2xl:gap-3 mx-4 py-2">
             {albums.map(item => (
               <CardAlbum
                 key={item.id}
@@ -73,17 +74,33 @@ export default function Artist () {
             ))}
           </ul>
         </section>
-        <section className="w-full mt-32 pb-32">
+        <section className="w-full mt-32">
           <h2 className="text-2xl font-bold mb-4">Os fãs também curtem</h2>
-          <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
-            {relatedArtists.map(item => (
-              <Card
+          <ul className="flex py-2">
+            {playlists.map(item => (
+              <CardPlaylist
                 key={item.id}
                 image={item.images[0]?.url}
                 link={`/artist/${item.id}`}
                 name={item.name}
-                descriptionOrType={item.type}
-                isArtist
+                description={item.type}
+                id={item.id}
+                displayName={item.owner.display_name}
+              />
+            ))}
+          </ul>
+        </section>
+        <section className="w-full mt-32 pb-32">
+          <h2 className="text-2xl font-bold mb-4">Os fãs também curtem</h2>
+          <ul className="grid grid-flow-col gap-2 2xl:gap-3 mx-4 py-2">
+            {relatedArtists.map(item => (
+              <CardArtist
+                key={item.id}
+                image={item.images[0]?.url}
+                link={`/artist/${item.id}`}
+                name={item.name}
+                type={item.type}
+                id={item.id}
               />
             ))}
           </ul>

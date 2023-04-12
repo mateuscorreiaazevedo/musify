@@ -2,14 +2,16 @@ import { useMyRecentlyTracks, useMyTopArtists, useFeaturedPlaylists, usePlaylist
 import { HeaderBar, greeting } from '@/modules/core'
 import { CardPlaylist } from '@/modules/playlists'
 import { CardArtist } from '@/modules/artists'
-import React from 'react'
 import { CardAlbum } from '@/modules/albums'
+import React from 'react'
 
 export default function Home () {
-  const { thisIsPlaylists } = usePlaylistArtists()
+  const { thisIsPlaylists, loading } = usePlaylistArtists()
   const { playlists } = useFeaturedPlaylists()
   const { topArtists } = useMyTopArtists()
   const { tracks } = useMyRecentlyTracks()
+
+  if (loading) return <></>
 
   return (
     <>

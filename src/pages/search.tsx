@@ -81,7 +81,7 @@ export default function Search () {
         {/* Artists */}
         <section className="w-full mt-3">
           <h2 className="text-2xl font-bold mb-4">Artistas</h2>
-          <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
+          <ul className="grid grid-flow-col gap-2 2xl:gap-3 mx-4 scrollbar-thin py-2">
             {results.artists?.items.map(item => (
               <CardArtist
                 key={item.id}
@@ -96,7 +96,7 @@ export default function Search () {
         </section>
         <section className="w-full mt-3">
           <h2 className="text-2xl font-bold mb-4">Álbuns</h2>
-          <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
+          <ul className="grid grid-flow-col gap-2 2xl:gap-3 mx-4 scrollbar-thin py-2">
             {results.albums?.items.map(item => (
               <CardAlbum
                 key={item.id}
@@ -111,7 +111,7 @@ export default function Search () {
         </section>
         <section className="w-full mt-3">
           <h2 className="text-2xl font-bold mb-4">Playlists</h2>
-          <ul className="grid grid-flow-col gap-5 mx-4 overflow-x-auto scrollbar-thin py-2">
+          <ul className="grid grid-flow-col gap-2 2xl:gap-3 mx-4 scrollbar-thin py-2">
             {results.playlists?.items.map(item => (
               <CardPlaylist
                 key={item.id}

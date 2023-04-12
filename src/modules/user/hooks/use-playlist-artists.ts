@@ -5,6 +5,7 @@ import React from 'react'
 export const usePlaylistArtists = () => {
   const { data: session } = useSession()
   const { spotifyApi } = useSpotify()
+  const [loading, setLoading] = React.useState(false)
   const [thisIsPlaylists, setThisIsPlaylists] = React.useState<
     SpotifyApi.PlaylistObjectSimplified[]
   >([])
@@ -12,6 +13,7 @@ export const usePlaylistArtists = () => {
   React.useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       (async () => {
+        setLoading(true)
         try {
           const topArtists = await spotifyApi.getMyTopArtists()
           topArtists.body.items.forEach(async ({ name }) => {
@@ -27,12 +29,15 @@ export const usePlaylistArtists = () => {
         } catch (error) {
           console.error((error as any).message)
           signOut({ callbackUrl: '/login' })
+        } finally {
+          setLoading(false)
         }
       })()
     }
   }, [session])
 
   return {
-    thisIsPlaylists
+    thisIsPlaylists,
+    loading
   }
 }
