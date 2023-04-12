@@ -61,8 +61,6 @@ export default function Search () {
     )
   }
 
-  console.log(results.playlists?.items)
-
   return (
     <>
       <Head>

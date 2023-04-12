@@ -15,6 +15,6 @@ export interface ExtendedToken extends JWT {
 }
 
 export interface ExtendedSession extends Session {
-  accessToken: ExtendedToken['accessToken']
-  error: ExtendedToken['error']
+  accessToken?: string
+  error?: TokenError
 }
