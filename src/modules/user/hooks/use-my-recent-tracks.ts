@@ -13,7 +13,8 @@ export const useMyRecentlyTracks = () => {
       const getRecentlyTracks = async () => {
         try {
           const response = await spotifyApi.getMyRecentlyPlayedTracks()
-          setTracks(response.body.items)
+          const tracksNoRepeat = response.body.items
+          setTracks(tracksNoRepeat)
         } catch (error) {
           console.error((error as any).message)
           toast.error((error as any).message)
