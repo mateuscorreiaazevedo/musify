@@ -4,7 +4,10 @@ const nextConfig = {
   images: {
     domains: [
       'i.scdn.co',
-      'thisis-images.scdn.co'
+      'thisis-images.scdn.co',
+      'mosaic.scdn.co',
+      'charts-images.scdn.co',
+      'seeded-session-images.scdn.co'
     ]
   }
 }

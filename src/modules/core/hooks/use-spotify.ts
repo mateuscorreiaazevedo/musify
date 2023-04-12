@@ -12,7 +12,7 @@ export const useSpotify = () => {
         signIn()
       }
 
-      spotifyApi.setAccessToken((session as ExtendedSession)?.accessToken)
+      spotifyApi.setAccessToken((session as ExtendedSession).accessToken!)
     }
   }, [session])
 

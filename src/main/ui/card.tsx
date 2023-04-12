@@ -1,4 +1,5 @@
 import { useGlobal } from '@/modules/core'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { FaPlay } from 'react-icons/fa'
@@ -24,7 +25,10 @@ export const Card = (props: Props) => {
   return (
     <div className="relative p-3 bg-zinc-800 w-52 hover:bg-zinc-700 transition-colors rounded-md h-64 group/item mx-4">
       <Link href={link} className="flex flex-col gap-px">
-        <img
+        <Image
+          width={200}
+          height={200}
+          loading='lazy'
           src={image}
           alt={name}
           className={`mx-auto h-40 w-40 shadow-2xl ${

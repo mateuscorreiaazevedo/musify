@@ -2,6 +2,7 @@ import { ButtonPlay, Table, TableItem } from '@/main/ui'
 import { useAlbum } from '@/modules/albums'
 import { useGlobal } from '@/modules/core'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -35,7 +36,7 @@ export default function Album () {
       </Head>
       <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
-          {album.images && <img src={album.images[0].url} alt={album.name!} className="w-44 shadow-lg" />}
+          {album.images && <Image width={176} height={176} src={album.images[0].url} alt={album.name!} className="w-44 shadow-lg" />}
           <div>
             <p className="w-full pr-44 text-justify font-bold capitalize">{album.type}</p>
             <h1 className="text-5xl font-bold">{album.name}</h1>

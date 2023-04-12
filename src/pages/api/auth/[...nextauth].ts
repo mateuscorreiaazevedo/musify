@@ -1,7 +1,8 @@
+/* eslint-disable func-call-spacing */
 import nextAuth, { CallbacksOptions, NextAuthOptions } from 'next-auth'
 import Spotify from 'next-auth/providers/spotify'
 import { scopes, spotifyApi } from '@/main/config/spotify'
-import { ExtendedToken, TokenError } from '@/modules/core'
+import { ExtendedSession, ExtendedToken, TokenError } from '@/modules/core'
 
 const refreshAccessToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
   try {
@@ -32,9 +33,8 @@ const jwtCallback: CallbacksOptions['jwt'] = async ({ token, account, user }) =>
       user,
       accessToken: account.access_token!,
       refreshToken: account.refresh_token!,
-      expiresAt: (account.expires_at as number) * 1000 // conterted to ms
+      expiresAt: (account.expires_at as number) * 1000 // converted to ms
     }
-    console.log('id:', extendedToken.id)
     return extendedToken
   }
 
@@ -46,8 +46,8 @@ const jwtCallback: CallbacksOptions['jwt'] = async ({ token, account, user }) =>
 }
 
 const sessionCallback: CallbacksOptions['session'] = async ({ session, token }) => {
-  session.accessToken = (token as ExtendedToken).accessToken
-  session.error = (token as ExtendedToken).error
+  (session as ExtendedSession).accessToken = (token as ExtendedToken).accessToken;
+  (session as ExtendedSession).error = (token as ExtendedToken).error
 
   return session
 }

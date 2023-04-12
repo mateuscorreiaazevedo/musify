@@ -1,6 +1,7 @@
 import { formatHelper } from '@/modules/core'
 import { useUser } from '@/modules/user'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -29,7 +30,10 @@ export default function User () {
       <article className="relative">
         <section className="mt-20 gap-4 flex justify-start items-end">
           {user.images && (
-            <img
+            <Image
+              width={200}
+              height={200}
+              loading='lazy'
               src={user.images[0].url}
               alt={user.display_name!}
               className="w-60 h-60 object-cover shadow-2xl rounded-full"

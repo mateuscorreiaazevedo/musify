@@ -14,6 +14,7 @@ import React from 'react'
 
 import * as Slider from '@radix-ui/react-slider'
 import { DevicesPopover } from './devices-popover'
+import Image from 'next/image'
 
 export const Player = () => {
   const [percentage, setPercentage] = React.useState(0)
@@ -92,7 +93,11 @@ export const Player = () => {
       <div className="flex gap-2 w-80">
         {!!trackState && (
           <>
-            <img src={trackState?.album?.images[0]?.url} className="w-14 h-14 object-contain" />
+            <Image
+              src={trackState?.album?.images[0]?.url}
+              alt='music image album'
+              className="w-14 h-14 object-contain"
+            />
             <div className="mt-1">
               <h4 className="truncate w-80 font-semibold hover:underline">
                 <Link href={`/album/${trackState.album?.id}`}>{trackState?.name}</Link>

@@ -4,6 +4,7 @@ import { MdOutlineWatchLater } from 'react-icons/md'
 import React from 'react'
 import { transparentize } from 'polished'
 import { inputRange } from '@/modules/core'
+import { useSession } from 'next-auth/react'
 
 interface Props {
   intercectionFuntion?: () => Promise<void>
@@ -12,21 +13,21 @@ interface Props {
 }
 
 export const Table = ({ primaryColor: color, children, intercectionFuntion }: Props) => {
+  const [scrollY, setScrollY] = React.useState(0)
+  const { scrollY: framerScroll } = useScroll()
+  const { data: session } = useSession()
   const { ref, inView } = useInView()
-  const { scrollY } = useScroll()
   let primaryColor
   let backdropFilter
 
   if (color) {
-    primaryColor = useTransform(scrollY, inputRange, [
+    primaryColor = useTransform(framerScroll, inputRange, [
       transparentize(1, color),
-      transparentize(0.9, color),
-      transparentize(0.1, color)
+      transparentize(0, color),
+      transparentize(0, color)
     ])
-    backdropFilter = useTransform(scrollY, inputRange, ['none', 'blur(1px)', 'blur(6px)'])
+    backdropFilter = useTransform(framerScroll, inputRange, ['none', 'blur(1px)', 'blur(6px)'])
   }
-  const background = useTransform(scrollY, inputRange, ['transparent', 'transparent', '#222222'])
-  const borderColor = useTransform(scrollY, inputRange, ['transparent', 'transparent', '#434343'])
 
   if (intercectionFuntion) {
     React.useEffect(() => {
@@ -36,6 +37,18 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
     }, [inView])
   }
 
+  const onScroll = React.useCallback(() => {
+    const { pageYOffset } = window
+    setScrollY(Math.floor(pageYOffset))
+  }, [])
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll, { capture: true })
+    }
+  }, [session])
+
   return (
     <section className="mt-20 mb-24 min-h-full pb-16">
       <motion.div
@@ -43,18 +56,16 @@ export const Table = ({ primaryColor: color, children, intercectionFuntion }: Pr
         style={{ background: primaryColor, backdropFilter }}
         className="fixed left-60 z-10 top-0 w-full h-20"
       />
-      <motion.div
-        transition={{ duration: 1.5 }}
-        style={{ background, borderBottomColor: borderColor }}
-        className="fixed left-60 top-20 w-full z-10 h-10 border-b"
-      />
+      {scrollY >= 510 && (
+        <div className="fixed left-60 top-20 w-full z-10 border-b border-b-zinc-700 h-10 transition-all bg-zinc-800" />
+      )}
       <table className="w-full font-semibold text-zinc-500">
         <thead className="sticky z-10 top-20 border-b border-b-zinc-700 h-10 text-zinc-300 pl-2">
           <tr>
             <td className="pl-4">#</td>
             <td>Título</td>
             <td>Álbum</td>
-            <td className='w-40'>Adicionada em</td>
+            <td className="w-40">Adicionada em</td>
             <td>
               <MdOutlineWatchLater className="pl-2 text-3xl" />
             </td>

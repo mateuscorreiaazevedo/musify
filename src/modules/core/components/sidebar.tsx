@@ -25,8 +25,8 @@ export const Sidebar = () => {
           <Image
             src="https://cdn.worldvectorlogo.com/logos/spotify-1.svg"
             alt="Spotify logo"
-            width={100}
-            height={100}
+            width={200}
+            height={200}
             className="mx-auto w-36"
           />
         </Link>
