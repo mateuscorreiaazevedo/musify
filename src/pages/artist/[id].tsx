@@ -75,7 +75,7 @@ export default function Artist () {
           </ul>
         </section>
         <section className="w-full mt-32">
-          <h2 className="text-2xl font-bold mb-4">Os fãs também curtem</h2>
+          <h2 className="text-2xl font-bold mb-4">Com {artist.name}</h2>
           <ul className="flex py-2">
             {playlists.map(item => (
               <CardPlaylist
