@@ -1,6 +1,6 @@
-import { Card } from '@/main/ui'
 import { useGlobal, useSpotify } from '@/modules/core'
 import { useSession } from 'next-auth/react'
+import { Card } from '@/main/ui'
 import React from 'react'
 
 type Props = {

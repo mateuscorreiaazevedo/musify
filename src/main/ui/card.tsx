@@ -31,9 +31,9 @@ export const Card = (props: Props) => {
             isArtist ? 'rounded-full object-cover' : 'rounded-sm object-contain'
           }`}
         />
-        <h2 className="text-xl font-bold truncate">{name}</h2>
+        <h2 className="text-xl font-bold truncate" title={name}>{name}</h2>
         <p className="text-zinc-400 truncate">{descriptionOrType}</p>
-        {displayName && <p className="text-zinc-400 text-sm">De {displayName}</p>}
+        {displayName && <p className="truncate text-zinc-400 text-sm">De {displayName}</p>}
       </Link>
       <div
         onClick={handlePlayed}
