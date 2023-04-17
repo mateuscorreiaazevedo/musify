@@ -96,6 +96,8 @@ export const Player = () => {
             <Image
               src={trackState?.album?.images[0]?.url}
               alt='music image album'
+              width={200}
+              height={200}
               className="w-14 h-14 object-contain"
             />
             <div className="mt-1">
